@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
+#include "get_next_line.h"
 
 typedef struct
 {
@@ -32,7 +34,7 @@ void check_boundaries(t_map *game, int y, int x)
 	}
 	else if (c != '1' && c != 'V')
 	{
-		fprintf(stderr, "Error: Invalid character '%c' in accessible map area.\n", c);
+		fprintf(stderr, "Error: Invalid character '-%c-' in accessible map area.\n", c);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -96,6 +98,40 @@ void free_map(char **map)
 
 int main()
 {
+	int fd = open("a.txt", O_CREAT | O_RDWR, 0777);
+	int i,j;
+	i = 1;
+	char *l = ' ';
+	while(l)
+	{
+		printf("YAZDIM1\n");
+		l = get_next_line(fd);
+		printf("%s",l);
+		i++;
+	}
+	free(l);
+	l = ' ';
+	char **maplines2;
+	
+	maplines2 = malloc(sizeof(char**)*i);
+	i = 0;
+	close(fd);
+	fd = open("a.txt", O_CREAT | O_RDWR, 0777);
+	while(l)
+	{
+		printf("YAZDIM2\n");
+		l = get_next_line(fd);
+		maplines2[i] = l;
+		i++;
+	}
+	i = 0;
+	while(maplines2[i])
+	{
+		printf("YAZDIM3\n");
+		printf("%s",maplines2[i]);
+		i++;
+	}
+	
 	char *map_lines[] = {
 		"   1111111111111111111111111",
 		"  11000000000110000000000001                 11111111111",
@@ -117,7 +153,7 @@ int main()
 		NULL};
 
 	t_map game;
-	game.map_line = copy_map(map_lines);
+	game.map_line = copy_map(maplines2);
 
 	printf("Harita doğrulaması başlıyor...\n");
 	validate_map(&game);
