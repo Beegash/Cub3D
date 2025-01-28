@@ -167,7 +167,7 @@ char **read_map_from_file(char *filename)
 int main()
 {
 
-	char **map_lines = read_map_from_file("map.cub");
+	char **map_lines = read_map_from_file("map.txt");
 
 	t_map game;
 	game.map_line = map_lines;

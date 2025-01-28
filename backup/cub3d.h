@@ -1,8 +1,6 @@
 #ifndef CUB3D_H
 #define CUB3D_H
 
-#define MAX_LINE_LENGTH 256
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -28,10 +26,5 @@ void check_boundaries(t_map *game, int y, int x);
 char **copy_map(char **map);
 char *replace_tabs_with_spaces(char *line, int spaces_per_tab);
 char *ft_strdup(const char *s1);
-void validate_texture(char *line, char *identifier, t_map *game);
-void validate_color(char *line, char *identifier, int *color);
-int is_valid_color(char *line);
-int is_valid_texture_path(char *line);
-void parse_cub_file(char *filename, t_map *game);
 
 #endif
