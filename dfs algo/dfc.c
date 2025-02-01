@@ -133,7 +133,6 @@ char *replace_tabs_with_spaces(char *line, int spaces_per_tab)
 	new_line[j] = '\0';
 	return new_line;
 }
-
 char **read_map_from_file(char *filename)
 {
 	int fd = open(filename, O_RDONLY);
@@ -164,23 +163,24 @@ char **read_map_from_file(char *filename)
 	close(fd);
 	return map_lines;
 }
-int main()
-{
+// int main()
+// {
+//
+//     char **map_lines = read_map_from_file("map.cub");
+//
+//     t_map game;
+//     game.map_line = map_lines;
+//
+//     printf("Map validation started...\n");
+//     validate_map(&game);
+//
+//     printf("Map is valid. Printing map...\n");
+//     for (int i = 0; game.map_line[i] != NULL; i++)
+//     {
+//         printf("%s", game.map_line[i]);
+//     }
+//
+//     free_map(game.map_line);
+//     return 0;
+// }
 
-	char **map_lines = read_map_from_file("map.cub");
-
-	t_map game;
-	game.map_line = map_lines;
-
-	printf("Map validation started...\n");
-	validate_map(&game);
-
-	printf("Map is valid. Printing map...\n");
-	for (int i = 0; game.map_line[i] != NULL; i++)
-	{
-		printf("%s", game.map_line[i]);
-	}
-
-	free_map(game.map_line);
-	return 0;
-}

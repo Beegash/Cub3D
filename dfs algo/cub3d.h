@@ -33,5 +33,8 @@ void validate_color(char *line, char *identifier, int *color);
 int is_valid_color(char *line);
 int is_valid_texture_path(char *line);
 void parse_cub_file(char *filename, t_map *game);
+char *texture_path(char *line, int j);
+int rgb_numbers(char *line, int j, int *rgb);
+char **split(char *str, char c);
 
 #endif
