@@ -36,5 +36,6 @@ void parse_cub_file(char *filename, t_map *game);
 char *texture_path(char *line, int j);
 int rgb_numbers(char *line, int j, int *rgb);
 char **split(char *str, char c);
+char *ft_strdup(const char *s1);
 
 #endif

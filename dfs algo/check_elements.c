@@ -1,6 +1,5 @@
 #include "cub3d.h"
 #include "get_next_line.h"
-#include <string.h>
 
 void validate_texture(char *line, char *identifier, t_map *game);
 void validate_color(char *line, char *identifier, int *color);
@@ -10,13 +9,13 @@ void parse_cub_file(char *filename, t_map *game);
 
 void validate_texture(char *line, char *identifier, t_map *game)
 {
-	if (strncmp(line, identifier, strlen(identifier)) != 0)
+	if (strncmp(line, identifier, ft_strlen(identifier)) != 0)
 	{
 		fprintf(stderr, "Error: Invalid texture identifier.\n");
 		exit(EXIT_FAILURE);
 	}
 
-	char *path = line + strlen(identifier);
+	char *path = line + ft_strlen(identifier);
 	while (*path == ' ')
 		path++;
 	if (!is_valid_texture_path(path))
@@ -37,13 +36,13 @@ void validate_texture(char *line, char *identifier, t_map *game)
 
 void validate_color(char *line, char *identifier, int *color)
 {
-	if (strncmp(line, identifier, strlen(identifier)) != 0)
+	if (strncmp(line, identifier, ft_strlen(identifier)) != 0)
 	{
 		fprintf(stderr, "Error: Invalid color identifier.\n");
 		exit(EXIT_FAILURE);
 	}
 
-	char *color_values = line + strlen(identifier);
+	char *color_values = line + ft_strlen(identifier);
 	while (*color_values == ' ')
 		color_values++;
 

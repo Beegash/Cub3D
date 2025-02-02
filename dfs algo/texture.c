@@ -1,4 +1,5 @@
 #include "cub3d.h"
+#include "get_next_line.h"
 
 int	ft_atoi(const char *str)
 {
@@ -28,31 +29,64 @@ int	ft_atoi(const char *str)
 	}
 	return (res * neg);
 }
+int ft_trimplus(char *str, int start, int end)
+{
+    while(start < end)
+    {
+        if(str[start] == ' ' || str[start] == '\t')
+        {
+            printf("Error Incorrect Amount Of Number : \"%c\" \n",str[start]);
+            return(0);
+        }
+        start++;
+    }
+    return(1);
+}
+char *ft_strtrim(char *str)
+{
+    int start;
+    int end;
+    char *trimmed;
+    int i;
+
+    start = 0;
+    while (str[start] && (str[start] == ' ' || str[start] == '\t'))
+        start++;
+    end = ft_strlen(str) - 1;
+    while (end > start && (str[end] == ' ' || str[end] == '\t' || str[end] == '\n'))
+        end--;
+    if(ft_trimplus(str,start,end) == 0)
+        return (NULL);
+    trimmed = (char *)malloc(sizeof(char) * (end - start + 2));
+    if (!trimmed)
+        return NULL;
+    i = 0;
+    while (start <= end)
+        trimmed[i++] = str[start++];
+    trimmed[i] = '\0';
+    return trimmed;
+}
 
 char *texture_path(char *line, int j)
 {
-    int len;
-    char *path;
+    char *full_line;
+    char *trimmed;
 
+    // Baştaki boşlukları atla
     while(line[j] && (line[j] == '\t' || line[j] == ' '))
         j++;
     
-    len = j;
-    while(line[len] && line[len] != '\n' && line[len] != ' ' && line[len] != '\t')
-        len++;
-    
-    if (line[len] && (line[len] == ' ' || line[len] == '\t'))
+    // Texture yolunu al ve boşlukları temizle
+    full_line = ft_strdup(line + j);
+    if (!full_line)
         return NULL;
-    
-    path = (char *)malloc(sizeof(char) * (len - j + 1));
-    if (!path)
+
+    trimmed = ft_strtrim(full_line);
+    free(full_line);
+    if (!trimmed)
         return NULL;
-    
-    int i = 0;
-    while(j < len)
-        path[i++] = line[j++];
-    path[i] = '\0';
-    return path;
+
+    return trimmed;
 }
 
 int get_texture(char **map_line, t_map *map)
@@ -102,6 +136,7 @@ int get_texture(char **map_line, t_map *map)
 int rgb_numbers(char *line, int j, int *rgb)
 {
     char **numbers;
+    char *trimmed;
     int i;
 
     while(line[j] && (line[j] == '\t' || line[j] == ' '))
@@ -115,8 +150,11 @@ int rgb_numbers(char *line, int j, int *rgb)
     }
 
     i = 0;
-    while (numbers[i])
+    while (numbers[i]){
+
+        printf("%s",numbers[i]);
         i++;
+    }
     if (i != 3)
     {
         printf("Error: Color must have exactly 3 values (R,G,B)\n");
@@ -127,7 +165,15 @@ int rgb_numbers(char *line, int j, int *rgb)
     i = 0;
     while (i < 3)
     {
-        rgb[i] = ft_atoi(numbers[i]);
+        trimmed = ft_strtrim(numbers[i]);
+        if (!trimmed)
+        {
+            printf("Error: Memory allocation failed for trimming\n");
+            free_map(numbers);
+            return 0;
+        }
+        rgb[i] = ft_atoi(trimmed);
+        free(trimmed);
         if (rgb[i] < 0 || rgb[i] > 255)
         {
             printf("Error: Color values must be between 0 and 255\n");
