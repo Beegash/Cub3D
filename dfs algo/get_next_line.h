@@ -15,5 +15,6 @@ char	*ft_clean(char *handle_string);
 char	*ft_read(int fd, char *str);
 char	*get_next_line(int fd);
 char	*ft_strjoin(char *lft_str, char *buff);
+char	*ft_strchr(const char *s, int c);
 
 #endif

@@ -1,16 +1,14 @@
 #include "get_next_line.h"
 
-int	ft_strlen(const char *c)
+int ft_strlen(const char *c)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (!c)
 		return (0);
-	while (c[i])
-	{
+	while (c[i] != '\0')
 		i++;
-	}
 	return (i);
 }
 
@@ -32,8 +30,8 @@ int	ft_find(char *finder)
 
 char	*ft_strjoin(char *lft_str, char *buff)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
+	int	j;
 	char	*str;
 
 	if (!lft_str)

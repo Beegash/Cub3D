@@ -97,14 +97,18 @@ int get_texture(char **map_line, t_map *map)
     while (map_line[i])
     {
         j = 0;
-        while(map_line[i][j] && map_line[i][j] == '\n')
-            i++;
-        while(map_line[i][j] && (map_line[i][j] == '\t' || map_line[i][j] == ' '))
+        // Baştaki boşlukları atla
+        while(map_line[i][j] && (map_line[i][j] == '\t' || map_line[i][j] == ' ' || map_line[i][j] == '\n'))
             j++;
 
-        if (map_line[i][j] == '1' || map_line[i][j] == '0')
-            return i;
+        // Boş satırı atla
+        if (!map_line[i][j])
+        {
+            i++;
+            continue;
+        }
 
+        // Texture ve renk kontrolü
         if(map_line[i][j] == 'N' && map_line[i][j+1] == 'O' && !(map->north_texture))
             map->north_texture = texture_path(map_line[i], j+2);
         else if(map_line[i][j] == 'S' && map_line[i][j+1] == 'O' && !(map->south_texture))
@@ -113,24 +117,34 @@ int get_texture(char **map_line, t_map *map)
             map->west_texture = texture_path(map_line[i], j+2);
         else if(map_line[i][j] == 'E' && map_line[i][j+1] == 'A' && !(map->east_texture))
             map->east_texture = texture_path(map_line[i], j+2);
-        else if(map_line[i][j] == 'C' && !(map->ceiling_color[0]))
-        {
-            if (!rgb_numbers(map_line[i], j+1, map->ceiling_color))
-                return 0;
-        }
         else if(map_line[i][j] == 'F' && !(map->floor_color[0]))
         {
-            if (!rgb_numbers(map_line[i], j+1, map->floor_color))
+            j++; // F'den sonraki karaktere geç
+            if (!rgb_numbers(map_line[i], j, map->floor_color))
+            {
+                printf("Error in F color format\n");
                 return 0;
+            }
         }
-        else
+        else if(map_line[i][j] == 'C' && !(map->ceiling_color[0]))
         {
-            printf("Error: Invalid identifier at line %d: %c\n", i+1, map_line[i][j]);
+            j++; // C'den sonraki karaktere geç
+            if (!rgb_numbers(map_line[i], j, map->ceiling_color))
+            {
+                printf("Error in C color format\n");
+                return 0;
+            }
+        }
+        else if(map_line[i][j] == '1' || map_line[i][j] == '0')
+            return i;
+        else if(map_line[i][j] != '\0' && map_line[i][j] != '\n')
+        {
+            printf("Error: Invalid identifier at line %d: [%c] (ASCII: %d)\n", i+1, map_line[i][j], map_line[i][j]);
             return 0;
         }
         i++;
     }
-    return 1;
+    return i;
 }
 
 int rgb_numbers(char *line, int j, int *rgb)
@@ -139,9 +153,11 @@ int rgb_numbers(char *line, int j, int *rgb)
     char *trimmed;
     int i;
 
+    // Baştaki boşlukları atla
     while(line[j] && (line[j] == '\t' || line[j] == ' '))
         j++;
     
+    // Virgülle ayrılmış sayıları al
     numbers = split(line + j, ',');
     if (!numbers)
     {
@@ -149,12 +165,29 @@ int rgb_numbers(char *line, int j, int *rgb)
         return 0;
     }
 
+    // Sayı adedini kontrol et
     i = 0;
-    while (numbers[i]){
-
-        printf("%s",numbers[i]);
+    while (numbers[i])
+    {
+        trimmed = ft_strtrim(numbers[i]);
+        if (!trimmed || !*trimmed)  // Boş string kontrolü
+        {
+            printf("Error: Empty color value found\n");
+            free(trimmed);
+            free_map(numbers);
+            return 0;
+        }
+        if (!is_valid_number(trimmed))
+        {
+            printf("Error: Invalid number format in color value: %s\n", trimmed);
+            free(trimmed);
+            free_map(numbers);
+            return 0;
+        }
+        free(trimmed);
         i++;
     }
+
     if (i != 3)
     {
         printf("Error: Color must have exactly 3 values (R,G,B)\n");
@@ -162,6 +195,7 @@ int rgb_numbers(char *line, int j, int *rgb)
         return 0;
     }
 
+    // Sayıları dönüştür ve kontrol et
     i = 0;
     while (i < 3)
     {
@@ -186,56 +220,28 @@ int rgb_numbers(char *line, int j, int *rgb)
     return 1;
 }
 
-int main(void)
+int is_valid_number(char *str)
 {
-    t_map map;
-    char **map_lines;
+    int i = 0;
 
-    // Map yapısını sıfırla
-    map.north_texture = NULL;
-    map.south_texture = NULL;
-    map.west_texture = NULL;
-    map.east_texture = NULL;
-    for(int i = 0; i < 3; i++)
+    // Baştaki boşlukları atla
+    while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+        i++;
+
+    // + veya - işareti olabilir
+    if (str[i] == '+' || str[i] == '-')
+        i++;
+
+    // En az bir rakam olmalı
+    if (!str[i])
+        return 0;
+
+    // Tüm karakterler rakam olmalı
+    while (str[i])
     {
-        map.floor_color[i] = 0;
-        map.ceiling_color[i] = 0;
+        if (str[i] < '0' || str[i] > '9')
+            return 0;
+        i++;
     }
-
-    // Map dosyasını oku
-    map_lines = read_map_from_file("map.cub");
-    if (!map_lines)
-    {
-        printf("Hata: map.cub dosyası okunamadı\n");
-        return 1;
-    }
-
-    // Texture ve renkleri işle
-    int result = get_texture(map_lines, &map);
-    if (result == 0)
-    {
-        printf("Hata: Texture veya renk değerleri geçersiz\n");
-        free_map(map_lines);
-        return 1;
-    }
-
-    // Sonuçları yazdır
-    printf("Texture paths:\n");
-    printf("North: %s\n", map.north_texture ? map.north_texture : "Not set");
-    printf("South: %s\n", map.south_texture ? map.south_texture : "Not set");
-    printf("West: %s\n", map.west_texture ? map.west_texture : "Not set");
-    printf("East: %s\n", map.east_texture ? map.east_texture : "Not set");
-
-    printf("\nColors:\n");
-    printf("Floor: RGB(%d,%d,%d)\n", map.floor_color[0], map.floor_color[1], map.floor_color[2]);
-    printf("Ceiling: RGB(%d,%d,%d)\n", map.ceiling_color[0], map.ceiling_color[1], map.ceiling_color[2]);
-
-    // Belleği temizle
-    free_map(map_lines);
-    free(map.north_texture);
-    free(map.south_texture);
-    free(map.west_texture);
-    free(map.east_texture);
-
-    return 0;
+    return 1;
 }
