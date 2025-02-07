@@ -1,18 +1,18 @@
 #include "cub3d.h"
 #include "get_next_line.h"
 
-void check_boundaries(t_map *game, int y, int x)
+void check_boundaries(t_game *game, int y, int x)
 {
-	if (y < 0 || x < 0 || game->map_line[y] == NULL || game->map_line[y][x] == '\0')
+	if (y < 0 || x < 0 || game->map->map_line[y] == NULL || game->map->map_line[y][x] == '\0')
 	{
 		fprintf(stderr, "Error: Map is not closed/surrounded by walls (boundary reached).\n");
 		exit(EXIT_FAILURE);
 	}
 
-	char c = game->map_line[y][x];
+	char c = game->map->map_line[y][x];
 	if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
-		game->map_line[y][x] = 'V';
+		game->map->map_line[y][x] = 'V';
 
 		check_boundaries(game, y, x + 1);
 		check_boundaries(game, y, x - 1);
@@ -31,39 +31,45 @@ void check_boundaries(t_map *game, int y, int x)
 	}
 }
 
-void validate_map(t_map *game)
+void validate_map(t_game *game)
 {
-	int player_x = -1, player_y = -1, player_count = 0;
+	game->playercount = 0;
 
-	for (int y = 0; game->map_line[y] != NULL; y++)
+	// Oyuncu pozisyonunu bul
+	for (int y = 0; game->map->map_line[y] != NULL; y++)
 	{
-		for (int x = 0; game->map_line[y][x] != '\0'; x++)
+		for (int x = 0; game->map->map_line[y][x] != '\0'; x++)
 		{
-			char c = game->map_line[y][x];
+			char c = game->map->map_line[y][x];
 			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
-				player_count++;
-				if (player_count == 1)
+				game->playercount++;
+				if (game->playercount == 1)
 				{
-					player_x = x;
-					player_y = y;
+					game->loc_px = x;
+					game->loc_py = y;
+					game->playertype = c;
 				}
 			}
 		}
 	}
 
-	if (player_count == 0)
+	if (game->playercount == 0)
 	{
 		fprintf(stderr, "Error: No player start position found.\n");
 		exit(EXIT_FAILURE);
 	}
-	else if (player_count > 1)
+	else if (game->playercount > 1)
 	{
 		fprintf(stderr, "Error: Multiple player start positions found.\n");
 		exit(EXIT_FAILURE);
 	}
 
-	check_boundaries(game, player_y, player_x);
+	// Debug mesajı
+	printf("Validate_map: Oyuncu pozisyonu bulundu: x=%d, y=%d, yön=%c\n", 
+		   game->loc_px, game->loc_py, game->playertype);
+
+	check_boundaries(game, game->loc_py, game->loc_px);
 }
 
 char **copy_map(char **map)

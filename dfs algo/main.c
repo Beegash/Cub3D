@@ -1,12 +1,78 @@
 #include "cub3d.h"
+#include <math.h>
 
 // Her kare için çağrılacak fonksiyon
 int game_loop(t_game *game)
 {
+    // Hareket hızı
+    double move_speed = 0.05;
+    double rot_speed = 0.03;
+
+    // İleri/geri hareket
+    if (game->key->w)  // İleri
+    {
+        double new_x = game->player->x + game->player->dir_x * move_speed;
+        double new_y = game->player->y + game->player->dir_y * move_speed;
+        if (game->map->map_line[(int)game->player->y][(int)new_x] != '1')
+            game->player->x = new_x;
+        if (game->map->map_line[(int)new_y][(int)game->player->x] != '1')
+            game->player->y = new_y;
+    }
+    if (game->key->s)  // Geri
+    {
+        double new_x = game->player->x - game->player->dir_x * move_speed;
+        double new_y = game->player->y - game->player->dir_y * move_speed;
+        if (game->map->map_line[(int)game->player->y][(int)new_x] != '1')
+            game->player->x = new_x;
+        if (game->map->map_line[(int)new_y][(int)game->player->x] != '1')
+            game->player->y = new_y;
+    }
+
+    // Sağ/sol hareket
+    if (game->key->d)  // Sağ
+    {
+        double new_x = game->player->x + game->player->plane_x * move_speed;
+        double new_y = game->player->y + game->player->plane_y * move_speed;
+        if (game->map->map_line[(int)game->player->y][(int)new_x] != '1')
+            game->player->x = new_x;
+        if (game->map->map_line[(int)new_y][(int)game->player->x] != '1')
+            game->player->y = new_y;
+    }
+    if (game->key->a)  // Sol
+    {
+        double new_x = game->player->x - game->player->plane_x * move_speed;
+        double new_y = game->player->y - game->player->plane_y * move_speed;
+        if (game->map->map_line[(int)game->player->y][(int)new_x] != '1')
+            game->player->x = new_x;
+        if (game->map->map_line[(int)new_y][(int)game->player->x] != '1')
+            game->player->y = new_y;
+    }
+
+    // Sağa/sola dönme
+    if (game->key->right)  // Sağa dön
+    {
+        double old_dir_x = game->player->dir_x;
+        game->player->dir_x = game->player->dir_x * cos(-rot_speed) - game->player->dir_y * sin(-rot_speed);
+        game->player->dir_y = old_dir_x * sin(-rot_speed) + game->player->dir_y * cos(-rot_speed);
+        double old_plane_x = game->player->plane_x;
+        game->player->plane_x = game->player->plane_x * cos(-rot_speed) - game->player->plane_y * sin(-rot_speed);
+        game->player->plane_y = old_plane_x * sin(-rot_speed) + game->player->plane_y * cos(-rot_speed);
+    }
+    if (game->key->left)  // Sola dön
+    {
+        double old_dir_x = game->player->dir_x;
+        game->player->dir_x = game->player->dir_x * cos(rot_speed) - game->player->dir_y * sin(rot_speed);
+        game->player->dir_y = old_dir_x * sin(rot_speed) + game->player->dir_y * cos(rot_speed);
+        double old_plane_x = game->player->plane_x;
+        game->player->plane_x = game->player->plane_x * cos(rot_speed) - game->player->plane_y * sin(rot_speed);
+        game->player->plane_y = old_plane_x * sin(rot_speed) + game->player->plane_y * cos(rot_speed);
+    }
+
     // Ekranı temizle
     ft_memset(game->mlx_data, 0, WINDOW_WIDTH * WINDOW_HEIGHT * sizeof(int));
 
-    // Burada daha sonra ray-casting yapılacak
+    // Raycasting işlemini gerçekleştir
+    perform_raycasting(game);
 
     // Ekranı güncelle
     mlx_put_image_to_window(game->mlx, game->win, game->img_ptr, 0, 0);
@@ -127,7 +193,12 @@ int main(void)
 
     // Map verilerini yapıya ata
     game.map->map_line = actual_map;
-    validate_map(game.map);
+    validate_map(&game);
+
+    // Debug mesajları
+    printf("Oyuncu pozisyonu: x=%d, y=%d\n", game.loc_px, game.loc_py);
+    printf("Oyuncu yönü: %c\n", game.playertype);
+    printf("Harita boyutu: %d satır\n", i);
     
     // Oyunu başlat
     if (!init_game(&game))

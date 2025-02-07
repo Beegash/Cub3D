@@ -17,6 +17,49 @@ static void init_game_struct(t_game *game)
     game->raycast = malloc(sizeof(t_raycast));
     game->key = malloc(sizeof(t_keycode));
     
+    if (!game->player || !game->raycast || !game->key)
+    {
+        printf("Hata: Bellek ayırma başarısız\n");
+        exit(1);
+    }
+
+    // Oyuncu başlangıç pozisyonunu ayarla
+    game->player->x = (double)game->loc_px + 0.5;  // Karenin ortasına yerleştir
+    game->player->y = (double)game->loc_py + 0.5;
+
+    // Oyuncu yönünü ayarla (başlangıçta karakterin baktığı yöne göre)
+    if (game->playertype == 'N')
+    {
+        game->player->dir_x = 0;
+        game->player->dir_y = -1;
+        game->player->plane_x = 0.66;
+        game->player->plane_y = 0;
+    }
+    else if (game->playertype == 'S')
+    {
+        game->player->dir_x = 0;
+        game->player->dir_y = 1;
+        game->player->plane_x = -0.66;
+        game->player->plane_y = 0;
+    }
+    else if (game->playertype == 'E')
+    {
+        game->player->dir_x = 1;
+        game->player->dir_y = 0;
+        game->player->plane_x = 0;
+        game->player->plane_y = 0.66;
+    }
+    else if (game->playertype == 'W')
+    {
+        game->player->dir_x = -1;
+        game->player->dir_y = 0;
+        game->player->plane_x = 0;
+        game->player->plane_y = -0.66;
+    }
+
+    // Raycast yapısını sıfırla
+    ft_memset(game->raycast, 0, sizeof(t_raycast));
+    
     // Tuş durumlarını sıfırla
     game->key->w = 0;
     game->key->a = 0;
