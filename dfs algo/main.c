@@ -1,6 +1,24 @@
 #include "cub3d.h"
 #include <math.h>
 
+// Dosya uzantısı kontrolü
+int control_extension(char *argv)
+{
+    int len = ft_strlen(argv);
+    
+    if (len < 4)  // ".cub" uzunluğundan kısa olamaz
+        return (0);
+        
+    // Son 4 karakteri kontrol et
+    if (argv[len - 4] != '.' ||
+        argv[len - 3] != 'c' ||
+        argv[len - 2] != 'u' ||
+        argv[len - 1] != 'b')
+        return (0);
+        
+    return (1);
+}
+
 // Her kare için çağrılacak fonksiyon
 int game_loop(t_game *game)
 {
@@ -126,11 +144,23 @@ int check_textures(t_map *map)
     return (1);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
     t_game game;
     char **map_lines;
     char **actual_map;
+
+    if (argc != 2)
+    {
+        printf("Hata: Yanlış argüman sayısı\nKullanım: ./cub3D harita.cub\n");
+        return (1);
+    }
+
+    if (!control_extension(argv[1]))
+    {
+        printf("Hata: Geçersiz dosya uzantısı. Dosya '.cub' uzantılı olmalıdır.\n");
+        return (1);
+    }
 
     // Oyun yapısını sıfırlama
     ft_memset(&game, 0, sizeof(t_game));
@@ -145,10 +175,10 @@ int main(void)
     ft_memset(game.map, 0, sizeof(t_map));
     
     // Map dosyasını oku
-    map_lines = read_map_from_file("map.cub");
+    map_lines = read_map_from_file(argv[1]);
     if (!map_lines)
     {
-        printf("Hata: map.cub dosyası okunamadı\n");
+        printf("Hata: %s dosyası okunamadı\n", argv[1]);
         free(game.map);
         return (1);
     }
