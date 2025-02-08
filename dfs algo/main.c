@@ -5,8 +5,8 @@
 int game_loop(t_game *game)
 {
     // Hareket hızı
-    double move_speed = 0.05;
-    double rot_speed = 0.03;
+    double move_speed = 0.045;
+    double rot_speed = 0.025;
 
     // İleri/geri hareket
     if (game->key->w)  // İleri

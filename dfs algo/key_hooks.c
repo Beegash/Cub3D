@@ -17,9 +17,9 @@ int key_press(int keycode, t_game *game)
         game->key->a = 1;
     else if (keycode == 2)  // D tuşu
         game->key->d = 1;
-    else if (keycode == 123) // Sol ok
+    else if (keycode == 124) // Sol ok
         game->key->left = 1;
-    else if (keycode == 124) // Sağ ok
+    else if (keycode == 123) // Sağ ok
         game->key->right = 1;
     return (0);
 }
@@ -35,9 +35,9 @@ int key_release(int keycode, t_game *game)
         game->key->a = 0;
     else if (keycode == 2)  // D tuşu
         game->key->d = 0;
-    else if (keycode == 123) // Sol ok
+    else if (keycode == 124) // Sol ok
         game->key->left = 0;
-    else if (keycode == 124) // Sağ ok
+    else if (keycode == 123) // Sağ ok
         game->key->right = 0;
     return (0);
 }
