@@ -58,11 +58,20 @@ char **copy_map(char **map)
 
 void free_map(char **map)
 {
+	int i = 0;
+
 	if (!map) // NULL kontrolü ekledik
 		return;
-
-	for (int i = 0; map[i] != NULL; i++)
-		free(map[i]);
-
+    while (map[i] != NULL)
+    {
+        free(map[i]);
+        i++;
+    }
 	free(map);
+}
+
+int	error_message(char *str)
+{
+	printf("Error: %s\n", str);
+	return (1);
 }

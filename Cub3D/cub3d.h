@@ -154,4 +154,5 @@ char *replace_tabs_with_spaces(char *line, int spaces_per_tab);
 char **copy_map(char **map);
 
 char *ft_trimend(const char *s1, const char *set);
+int	error_message(char *str);
 #endif
