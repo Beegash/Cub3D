@@ -1,0 +1,11 @@
+NO ./textures/bir.xpm          
+SO ./textures/iki.xpm
+WE ./textures/uc.xpm   		
+EA ./textures/dort.xpm
+F 220, 100 , 10
+C 225, 30, 10
+111111
+100101
+101001
+1100N1
+111111
