@@ -29,7 +29,7 @@ typedef struct s_images
 	char    *south_wall;
 	char    *north_wall;
 	char    *east_wall;
-	char    *west_wall;
+	char    *west_wall; 
 	char    *floor;
 	char    *ceiling;
 	int     floor_texture;

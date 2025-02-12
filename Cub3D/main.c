@@ -248,14 +248,6 @@ int main(int argc, char **argv)
     // Oyun döngüsünü başlat
     mlx_loop_hook(game.mlx, game_loop, &game);
     mlx_loop(game.mlx);
-    
-    // Program buraya asla ulaşmaz çünkü mlx_loop sonsuza kadar çalışır
-    // Ama yine de temizlik yapalım
-    
-    free(game.mlx);
-    free(game.map);
-    free_map(map_lines);
-    free_map(actual_map);
-    mlx_destroy_display(game.mlx);
+
     return (0);
 } 

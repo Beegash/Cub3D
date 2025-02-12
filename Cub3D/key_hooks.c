@@ -6,7 +6,7 @@ int key_press(int keycode, t_game *game)
     if (keycode == 65307) // ESC tuşu (Ubuntu)
     {
         printf("Oyundan çıkılıyor...\n");
-        mlx_destroy_window(game->mlx, game->win);
+        exit_game(game);
         exit(0);
     }
     else if (keycode == 119) // W tuşu (Ubuntu)
@@ -46,7 +46,8 @@ int key_release(int keycode, t_game *game)
 int close_window(t_game *game)
 {
     printf("Oyundan çıkılıyor...\n");
-    mlx_destroy_window(game->mlx, game->win);
+  
+    exit_game(game);
     exit(0);
     return (0);
 }
@@ -77,6 +78,7 @@ int exit_game(t_game *game)
     free(game->player);
     free(game->raycast);
     free(game->key);
+    mlx_destroy_display(game->mlx);
 
     exit(0);
     return (0);
