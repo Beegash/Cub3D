@@ -140,6 +140,7 @@ int     exit_game(t_game *game);
 
 // Yardımcı fonksiyonlar
 void    *ft_memset(void *b, int c, size_t len);
+char	*ft_strdup(const char *s1);
 
 // Raycasting fonksiyonları
 void perform_raycasting(t_game *game);
@@ -147,6 +148,10 @@ void calculate_wall_height(t_game *game, t_raycast *ray);
 void calculate_ray_dir(t_game *game, t_raycast *ray, int x);
 void perform_dda(t_game *game, t_raycast *ray);
 void draw_wall(t_game *game, int x, t_raycast *ray);
+
+// Map fonksiyonları
+char *replace_tabs_with_spaces(char *line, int spaces_per_tab);
+char **copy_map(char **map);
 
 char *ft_trimend(const char *s1, const char *set);
 #endif

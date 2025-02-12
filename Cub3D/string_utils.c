@@ -55,3 +55,33 @@ char *ft_trimend(const char *s1, const char *set)
     trimmed[i] = '\0';
     return (trimmed);
 }
+
+char *ft_strdup(const char *s1)
+{
+	size_t size;
+	size_t i;
+	char *str;
+
+	i = 0;
+	size = ft_strlen(s1);
+	str = (char *)malloc(size + 1);
+	if (!str)
+		return (NULL);
+	while (i < size)
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+void *ft_memset(void *b, int c, size_t len)
+{
+    unsigned char *ptr;
+    
+    ptr = (unsigned char *)b;
+    while (len--)
+        *ptr++ = (unsigned char)c;
+    return (b);
+} 
