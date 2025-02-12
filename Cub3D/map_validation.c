@@ -58,15 +58,29 @@ void check_boundaries(t_game *game, int y, int x)
 char **copy_map(char **map)
 {
 	int rows = 0;
-	while (map[rows] != NULL)
+	while (map[rows] != NULL) // Harita satırlarını say
 		rows++;
 
 	char **new_map = malloc((rows + 1) * sizeof(char *));
+	if (!new_map)
+	{
+		perror("Error allocating memory for copy_map");
+		exit(EXIT_FAILURE);
+	}
+
 	for (int i = 0; i < rows; i++)
 	{
 		new_map[i] = ft_strdup(map[i]);
+		if (!new_map[i]) // strdup başarısız olursa
+		{
+			perror("Error allocating memory for map row");
+			while (i > 0)
+				free(new_map[--i]); // Önceki tahsisleri temizle
+			free(new_map);
+			exit(EXIT_FAILURE);
+		}
 	}
-	new_map[rows] = NULL;
+	new_map[rows] = NULL; // Sonlandırıcı ekle
 	return new_map;
 }
 
@@ -128,14 +142,18 @@ void check_isolated_areas(t_game *game)
 {
 
 	char **temp_map = copy_map(game->map->map_line);
-
-	flood_fill_area(temp_map, game->loc_py, game->loc_px);
-
-	print_map(temp_map);
-
-	for (int y = 0; temp_map[y]; y++)
+	if (!temp_map)
 	{
-		for (int x = 0; temp_map[y][x]; x++)
+		fprintf(stderr, "Error: Failed to copy map\n");
+		exit(EXIT_FAILURE);
+	}
+	printf("DEBUG\n");
+	flood_fill_area(temp_map, game->loc_py, game->loc_px);
+	print_map(temp_map);
+printf("DEBUG\n");
+	for (int y = 0; temp_map[y] != NULL; y++) // NULL kontrolü ekledik
+	{
+		for (int x = 0; temp_map[y][x] != '\0'; x++)
 		{
 			char c = temp_map[y][x];
 			if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '1')
@@ -146,8 +164,9 @@ void check_isolated_areas(t_game *game)
 			}
 		}
 	}
-
+printf("DEBUG\n");
 	free_map(temp_map);
+	printf("DEBUG\n");
 }
 void validate_map(t_game *game)
 {
@@ -172,12 +191,12 @@ void validate_map(t_game *game)
 	if (game->playercount != 1)
 		handle_map_error(game->playercount ? "Multiple players" : "No player");
 
-	char **original_map = copy_map(game->map->map_line);
-
 	check_isolated_areas(game);
+	printf("DEBUG\n");
 	check_boundaries(game, game->loc_py, game->loc_px);
+	printf("DEBUG\n");
 
-	free_map(original_map);
+	printf("DEBUG\n");
 
 	for (int y = 0; game->map->map_line[y]; y++)
 	{
@@ -188,10 +207,15 @@ void validate_map(t_game *game)
 }
 void free_map(char **map)
 {
+	if (!map) // NULL kontrolü ekledik
+		return;
+
 	for (int i = 0; map[i] != NULL; i++)
 		free(map[i]);
+
 	free(map);
 }
+
 char *ft_strdup(const char *s1)
 {
 	size_t size;

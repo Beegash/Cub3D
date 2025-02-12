@@ -2,8 +2,8 @@
 #define CUB3D_H
 
 #define MAX_LINE_LENGTH 256
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 1200
+#define WINDOW_HEIGHT 750
 
 #include <stdio.h>
 #include <stdlib.h>

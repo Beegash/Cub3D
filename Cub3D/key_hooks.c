@@ -3,23 +3,23 @@
 // Tuşa basıldığında
 int key_press(int keycode, t_game *game)
 {
-    if (keycode == 53)      // ESC tuşu
+    if (keycode == 65307) // ESC tuşu (Ubuntu)
     {
         printf("Oyundan çıkılıyor...\n");
         mlx_destroy_window(game->mlx, game->win);
         exit(0);
     }
-    else if (keycode == 13) // W tuşu
+    else if (keycode == 119) // W tuşu (Ubuntu)
         game->key->w = 1;
-    else if (keycode == 1)  // S tuşu
+    else if (keycode == 115) // S tuşu (Ubuntu)
         game->key->s = 1;
-    else if (keycode == 0)  // A tuşu
+    else if (keycode == 97)  // A tuşu (Ubuntu)
         game->key->a = 1;
-    else if (keycode == 2)  // D tuşu
+    else if (keycode == 100) // D tuşu (Ubuntu)
         game->key->d = 1;
-    else if (keycode == 124) // Sol ok
+    else if (keycode == 65363) // Sol ok (Ubuntu)
         game->key->left = 1;
-    else if (keycode == 123) // Sağ ok
+    else if (keycode == 65361) // Sağ ok (Ubuntu)
         game->key->right = 1;
     return (0);
 }
@@ -27,17 +27,17 @@ int key_press(int keycode, t_game *game)
 // Tuş bırakıldığında
 int key_release(int keycode, t_game *game)
 {
-    if (keycode == 13)      // W tuşu
+    if (keycode == 119) // W tuşu
         game->key->w = 0;
-    else if (keycode == 1)  // S tuşu
+    else if (keycode == 115) // S tuşu
         game->key->s = 0;
-    else if (keycode == 0)  // A tuşu
+    else if (keycode == 97)  // A tuşuF
         game->key->a = 0;
-    else if (keycode == 2)  // D tuşu
+    else if (keycode == 100) // D tuşu
         game->key->d = 0;
-    else if (keycode == 124) // Sol ok
+    else if (keycode == 65363) // Sol ok
         game->key->left = 0;
-    else if (keycode == 123) // Sağ ok
+    else if (keycode == 65361) // Sağ ok
         game->key->right = 0;
     return (0);
 }
@@ -80,4 +80,4 @@ int exit_game(t_game *game)
 
     exit(0);
     return (0);
-} 
+}

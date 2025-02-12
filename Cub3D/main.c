@@ -23,8 +23,8 @@ int control_extension(char *argv)
 int game_loop(t_game *game)
 {
     // Hareket hızı
-    double move_speed = 0.045;
-    double rot_speed = 0.025;
+    double move_speed = 0.1;
+    double rot_speed = 0.05;
 
     // İleri/geri hareket
     if (game->key->w)  // İleri
@@ -251,6 +251,8 @@ int main(int argc, char **argv)
     
     // Program buraya asla ulaşmaz çünkü mlx_loop sonsuza kadar çalışır
     // Ama yine de temizlik yapalım
+    mlx_destroy_display(game.mlx);
+    free(game.mlx);
     free(game.map);
     free_map(map_lines);
     free_map(actual_map);
