@@ -6,7 +6,7 @@
 /*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:44:30 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/13 20:44:34 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:09:23 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,10 @@ static char	*get_word(char const *s, char c)
 	return (word);
 }
 
-char	**split(char *s, char c)
+static int	fill_result(char **result, char *s, char c, size_t words)
 {
-	char	**result;
-	size_t	words;
 	size_t	i;
 
-	if (!s)
-		return (NULL);
-	words = word_count(s, c);
-	result = (char **)malloc(sizeof(char *) * (words + 1));
-	if (!result)
-		return (NULL);
 	i = 0;
 	while (i < words)
 	{
@@ -75,12 +67,30 @@ char	**split(char *s, char c)
 		{
 			while (i > 0)
 				free(result[--i]);
-			free(result);
-			return (NULL);
+			return (0);
 		}
 		s += ft_strlen(result[i]);
 		i++;
 	}
 	result[i] = NULL;
+	return (1);
+}
+
+char	**split(char *s, char c)
+{
+	char	**result;
+	size_t	words;
+
+	if (!s)
+		return (NULL);
+	words = word_count(s, c);
+	result = (char **)malloc(sizeof(char *) * (words + 1));
+	if (!result)
+		return (NULL);
+	if (!fill_result(result, s, c, words))
+	{
+		free(result);
+		return (NULL);
+	}
 	return (result);
 }
