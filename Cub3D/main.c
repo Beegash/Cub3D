@@ -3,7 +3,7 @@
 
 int error_message(char *str)
 {
-   printf("Error: %s\n", str);
+   printf("Error\n%s\n", str);
    return (1);
 }
 
@@ -243,7 +243,7 @@ void cleanup_resources(t_game *game, char **all_lines, char **actual_map)
 
 int init_map_and_textures(t_game *game, char *map_file, char ***all_lines, int *map_start)
 {
-   *all_lines = read_map_from_file(map_file);
+   *all_lines = read_map_from_file(map_file, game);
    if (!*all_lines)
        return (0);
 

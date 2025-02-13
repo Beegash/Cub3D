@@ -1,22 +1,34 @@
 #include "cub3d.h"
 #include "./get_next_line/get_next_line.h"
 
-void flood_fill_area(char **map, int y, int x)
+static void handle_map_error(t_game *game, char **temp_map, const char *message)
+{
+    fprintf(stderr, "Error\n%s\n", message);
+    if (temp_map)
+        free_map(temp_map);
+    if (game)
+        cleanup_all(game);
+    exit(0);
+}
+
+void flood_fill_area(char **map, int y, int x, t_game *game)
 {
     if (y < 0 || !map[y])
         return;
     int row_len = ft_strlen(map[y]);
     if (x < 0 || x >= row_len)
         return;
-
     char c = map[y][x];
     if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '1')
     {
+        if ((c == '0') && (map[y][x + 1] == ' ' || map[y][x - 1] == ' '
+            || map[y + 1][x] == ' ' || map[y - 1][x] == ' '))
+            handle_map_error(game, map, "Map contains open space accessible from player area");
         map[y][x] = 'A';
-        flood_fill_area(map, y, x + 1);
-        flood_fill_area(map, y, x - 1);
-        flood_fill_area(map, y + 1, x);
-        flood_fill_area(map, y - 1, x);
+        flood_fill_area(map, y, x + 1, game);
+        flood_fill_area(map, y, x - 1, game);
+        flood_fill_area(map, y + 1, x, game);
+        flood_fill_area(map, y - 1, x, game);
     }
 }
 
@@ -32,15 +44,6 @@ void free_game_resources(t_game *game)
         free(game->map->east_texture);
         free(game->map);
     }
-}
-
-static void handle_map_error(t_game *game, char **temp_map, const char *message)
-{
-    fprintf(stderr, "Error: %s\n", message);
-    if (temp_map)
-        free_map(temp_map);
-    cleanup_all(game);
-    exit(EXIT_FAILURE);
 }
 
 static void check_all_characters(t_game *game)
@@ -90,7 +93,7 @@ void check_isolated_areas(t_game *game)
     if (!temp_map)
         handle_map_error(game, NULL, "Failed to copy map");
 
-    flood_fill_area(temp_map, game->loc_py, game->loc_px);
+    flood_fill_area(temp_map, game->loc_py, game->loc_px, game);
 
     for (int y = 0; temp_map[y]; y++)
     {
@@ -104,12 +107,14 @@ void check_isolated_areas(t_game *game)
     free_map(temp_map);
 }
 
-char **read_map_from_file(char *filename)
+char **read_map_from_file(char *filename, t_game *game)
 {
     int fd = open(filename, O_RDONLY);
     if (fd < 0)
     {
         perror("Error opening file");
+        close(fd);
+        cleanup_all(game);
         exit(EXIT_FAILURE);
     }
 
@@ -123,6 +128,7 @@ char **read_map_from_file(char *filename)
     {
         perror("Error allocating memory for map");
         close(fd);
+        cleanup_all(game);
         exit(EXIT_FAILURE);
     }
 
@@ -192,11 +198,4 @@ void validate_map(t_game *game)
 
     check_isolated_areas(game);
     check_boundaries(game, game->loc_py, game->loc_px);
-
-    for (int y = 0; game->map->map_line[y]; y++)
-    {
-        int len = ft_strlen(game->map->map_line[y]);
-        if (game->map->map_line[y][0] != '1' || game->map->map_line[y][len - 1] != '1')
-            handle_map_error(game, NULL, "Map borders not closed");
-    }
 }

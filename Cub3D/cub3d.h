@@ -118,7 +118,7 @@ typedef struct s_game
 }               t_game;
 
 // Fonksiyon prototipleri
-char    **read_map_from_file(char *filename);
+char    **read_map_from_file(char *filename, t_game *game);
 int     get_texture(char **map_line, t_map *map);
 void    validate_map(t_game *game);
 void    check_boundaries(t_game *game, int y, int x);
