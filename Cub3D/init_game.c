@@ -1,6 +1,5 @@
 #include "cub3d.h"
 
-// Oyun yapısını başlat
 static void init_game_struct(t_game *game)
 {
     game->mlx = NULL;

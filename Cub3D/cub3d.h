@@ -2,8 +2,8 @@
 #define CUB3D_H
 
 #define MAX_LINE_LENGTH 256
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 1200
+#define WINDOW_HEIGHT 750
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +29,7 @@ typedef struct s_images
 	char    *south_wall;
 	char    *north_wall;
 	char    *east_wall;
-	char    *west_wall;
+	char    *west_wall; 
 	char    *floor;
 	char    *ceiling;
 	int     floor_texture;
@@ -129,6 +129,7 @@ char    **split(char *s, char c);
 int     rgb_numbers(char *line, int j, int *rgb);
 int     is_valid_number(char *str);
 char    *ft_strtrim(char *str);
+char *ft_strchr(const char *s, int c);
 
 // MLX ve oyun fonksiyonları
 int     init_game(t_game *game);
@@ -140,6 +141,7 @@ int     exit_game(t_game *game);
 
 // Yardımcı fonksiyonlar
 void    *ft_memset(void *b, int c, size_t len);
+char	*ft_strdup(const char *s1);
 
 // Raycasting fonksiyonları
 void perform_raycasting(t_game *game);
@@ -148,5 +150,13 @@ void calculate_ray_dir(t_game *game, t_raycast *ray, int x);
 void perform_dda(t_game *game, t_raycast *ray);
 void draw_wall(t_game *game, int x, t_raycast *ray);
 
+// Map fonksiyonları
+char *replace_tabs_with_spaces(char *line, int spaces_per_tab);
+char **copy_map(char **map);
+
 char *ft_trimend(const char *s1, const char *set);
+void cleanup_resources(t_game *game, char **all_lines, char **actual_map);
+void cleanup_all(t_game *game);
+void cleanup_mlx_content(t_game *game);
+void cleanup_map_content(t_map *map);
 #endif
