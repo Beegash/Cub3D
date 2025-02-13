@@ -159,4 +159,5 @@ void cleanup_resources(t_game *game, char **all_lines, char **actual_map);
 void cleanup_all(t_game *game);
 void cleanup_mlx_content(t_game *game);
 void cleanup_map_content(t_map *map);
+int error_message(char *str, int err);
 #endif

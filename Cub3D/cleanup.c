@@ -16,15 +16,14 @@ void cleanup_map_content(t_map *map)
        free(map->east_texture);
 }
 
-
 void cleanup_mlx_content(t_game *game)
 {
-   if (!game || !game->mlx)
-       return;
+    int i;
 
-
-   // Cleanup wall textures
-   for (int i = 0; i < 4; i++)
+    i = 0;
+   //if (!game || !game->mlx)
+       //return;
+   while (i < 4)
    {
        if (game->walls[i])
        {
@@ -32,15 +31,10 @@ void cleanup_mlx_content(t_game *game)
                mlx_destroy_image(game->mlx, game->walls[i]->img);
            free(game->walls[i]);
        }
+       i++;
    }
-
-
-   // Cleanup main image
    if (game->img_ptr)
        mlx_destroy_image(game->mlx, game->img_ptr);
-
-
-   // Cleanup window and mlx
    if (game->win)
        mlx_destroy_window(game->mlx, game->win);
    if (game->mlx)
@@ -50,24 +44,14 @@ void cleanup_mlx_content(t_game *game)
    }
 }
 
-
 void cleanup_all(t_game *game)
 {
    if (!game)
        return;
-
-
-   // Cleanup map structure
    cleanup_map_content(game->map);
    if (game->map)
        free(game->map);
-
-
-   // Cleanup MLX related content
    cleanup_mlx_content(game);
-
-
-   // Cleanup other structures
    if (game->img)
        free(game->img);
    if (game->key)
@@ -78,8 +62,5 @@ void cleanup_all(t_game *game)
        free(game->raycast);
    if (game->mapname)
        free(game->mapname);
-
-
-   // Finally, free the game structure itself
    free(game);
 }

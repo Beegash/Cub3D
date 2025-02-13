@@ -1,10 +1,10 @@
 #include "cub3d.h"
 #include <math.h>
 
-int error_message(char *str)
+int error_message(char *str, int err)
 {
-   printf("Error\n%s\n", str);
-   return (1);
+   printf("Error: %s\n", str);
+   return (err);
 }
 
 
@@ -330,13 +330,13 @@ int main(int argc, char **argv)
 
 
    if (argc != 2)
-       return (error_message("Wrong argument count\n"));
+       return (error_message("Wrong argument count\n", 1));
    if (!control_extension(argv[1]))
-       return (error_message("Invalid file extension\n"));
+       return (error_message("Invalid file extension\n", 1));
 
 
    if (!initialize_and_validate(&game, argv[1]))
-       return (error_message("Game initialization failed\n"));
+       return (error_message("Game initialization failed\n", 1));
 
 
    start_game_loop(game);
