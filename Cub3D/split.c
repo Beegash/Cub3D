@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
+/*   ft_split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -76,7 +76,7 @@ static int	fill_result(char **result, char *s, char c, size_t words)
 	return (1);
 }
 
-char	**split(char *s, char c)
+char	**ft_split(char *s, char c)
 {
 	char	**result;
 	size_t	words;

@@ -13,6 +13,25 @@
 #include "./get_next_line/get_next_line.h"
 #include "cub3d.h"
 
+int	is_valid_number(char *str)
+{
+	int i = 0;
+
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	ft_atoi(const char *str)
 {
 	int	i;
@@ -237,7 +256,7 @@ int	rgb_numbers(char *line, int j, int *rgb)
 
 	while (line[j] && (line[j] == '\t' || line[j] == ' '))
 		j++;
-	numbers = split(line + j, ',');
+	numbers = ft_split(line + j, ',');
 	if (!numbers)
 		return (error_message("Memory allocation failed for color values", 0));
 	if (!validate_rgb_values(numbers))
@@ -245,24 +264,5 @@ int	rgb_numbers(char *line, int j, int *rgb)
 	if (!convert_rgb_values(numbers, rgb))
 		return (0);
 	free_map(numbers);
-	return (1);
-}
-
-int	is_valid_number(char *str)
-{
-	int i = 0;
-
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	if (!str[i])
-		return (0);
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		i++;
-	}
 	return (1);
 }
