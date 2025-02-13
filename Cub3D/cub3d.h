@@ -6,7 +6,7 @@
 /*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:47:41 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/13 20:47:42 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:23:50 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,46 +129,29 @@ typedef struct s_game
 	int			col;
 }				t_game;
 
-// Fonksiyon prototipleri
-char			**read_map_from_file(char *filename, t_game *game);
 int				get_texture(char **map_line, t_map *map);
-void			validate_map(t_game *game);
-void			check_boundaries(t_game *game, int y, int x);
-void			free_map(char **map);
-char			*ft_strdup(const char *s1);
-int				ft_strlen(const char *s);
-char			**split(char *s, char c);
 int				rgb_numbers(char *line, int j, int *rgb);
-int				is_valid_number(char *str);
-char			*ft_strtrim(char *str);
-char			*ft_strchr(const char *s, int c);
 
-// MLX ve oyun fonksiyonları
 int				init_game(t_game *game);
-int				game_loop(t_game *game);
 int				key_press(int keycode, t_game *game);
 int				key_release(int keycode, t_game *game);
 int				close_window(t_game *game);
-int				exit_game(t_game *game);
 
-// Yardımcı fonksiyonlar
 void			*ft_memset(void *b, int c, size_t len);
 char			*ft_strdup(const char *s1);
+char			*ft_strchr(const char *s, int c);
+int				ft_strlen(const char *s);
+char			**ft_split(char *s, char c);
+char			*ft_trimend(const char *s1, const char *set);
 
-// Raycasting fonksiyonları
 void			perform_raycasting(t_game *game);
-void			calculate_wall_height(t_game *game, t_raycast *ray);
-void			calculate_ray_dir(t_game *game, t_raycast *ray, int x);
-void			perform_dda(t_game *game, t_raycast *ray);
-void			draw_wall(t_game *game, int x, t_raycast *ray);
 
-// Map fonksiyonları
 char			*replace_tabs_with_spaces(char *line, int spaces_per_tab);
 char			**copy_map(char **map);
+void			free_map(char **map);
+char			**read_map_from_file(char *filename, t_game *game);
+void			validate_map(t_game *game);
 
-char			*ft_trimend(const char *s1, const char *set);
-void			cleanup_resources(t_game *game, char **all_lines,
-					char **actual_map);
 void			cleanup_all(t_game *game);
 void			cleanup_mlx_content(t_game *game);
 void			cleanup_map_content(t_map *map);
