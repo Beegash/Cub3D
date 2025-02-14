@@ -1,14 +1,23 @@
 NAME = cub3D
 
 SRCS = main.c \
-       string_utils.c \
-       init_game.c \
+       ft_str_funcs.c \
+       ft_split.c \
+       ft_str_funcs.c \
+       game_init.c \
+       game_init_utils.c \
        key_hooks.c \
-       utils.c \
        texture.c \
+       map_handle.c \
+       map_operations.c \
+       map_texture.c \
+       map_texture_utils.c \
+       map_algorithms.c \
        map_validation.c \
-       split.c \
-       raycasting.c \
+       map_read.c \
+       ray_cast_funcs.c \
+       ray_cast_draw.c \
+       ray_cast_draw_utils.c \
        cleanup.c
 
 

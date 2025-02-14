@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/14 03:08:00 by ifozmen           #+#    #+#             */
+/*   Updated: 2025/02/14 03:08:48 by ifozmen          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-int ft_strlen(const char *c)
+int	ft_strlen(const char *c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!c)
@@ -30,8 +42,8 @@ int	ft_find(char *finder)
 
 char	*ft_strjoin(char *lft_str, char *buff)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*str;
 
 	if (!lft_str)

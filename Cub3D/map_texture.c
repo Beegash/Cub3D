@@ -3,97 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:47:05 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/13 20:47:19 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/14 03:40:22 by ifozmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./get_next_line/get_next_line.h"
 #include "cub3d.h"
-
-int	is_valid_number(char *str)
-{
-	int i = 0;
-
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	if (!str[i])
-		return (0);
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	ft_atoi(const char *str)
-{
-	int	i;
-	int	neg;
-	int	res;
-
-	i = 0;
-	neg = 1;
-	res = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			neg *= -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		res = (str[i] - '0') + (res * 10);
-		i++;
-	}
-	return (res * neg);
-}
-int	ft_trimplus(char *str, int start, int end)
-{
-	while (start < end)
-	{
-		if (str[start] == ' ' || str[start] == '\t')
-		{
-			printf("Error Incorrect Amount Of Number : \"%c\" \n", str[start]);
-			return (0);
-		}
-		start++;
-	}
-	return (1);
-}
-char	*ft_strtrim(char *str)
-{
-	int		start;
-	int		end;
-	char	*trimmed;
-	int		i;
-
-	start = 0;
-	while (str[start] && (str[start] == ' ' || str[start] == '\t'))
-		start++;
-	end = ft_strlen(str) - 1;
-	while (end > start && (str[end] == ' ' || str[end] == '\t'
-			|| str[end] == '\n'))
-		end--;
-	if (ft_trimplus(str, start, end) == 0)
-		return (NULL);
-	trimmed = (char *)malloc(sizeof(char) * (end - start + 2));
-	if (!trimmed)
-		return (NULL);
-	i = 0;
-	while (start <= end)
-		trimmed[i++] = str[start++];
-	trimmed[i] = '\0';
-	return (trimmed);
-}
 
 char	*texture_path(char *line, int j)
 {
@@ -190,79 +108,4 @@ int	get_texture(char **map_line, t_map *map)
 		i++;
 	}
 	return (i);
-}
-
-static int	validate_rgb_values(char **numbers)
-{
-	int		i;
-	char	*trimmed;
-
-	i = 0;
-	while (numbers[i])
-	{
-		trimmed = ft_strtrim(numbers[i]);
-		if (!trimmed || !*trimmed)
-		{
-			free(trimmed);
-			free_map(numbers);
-			return (error_message("Empty color value found", 0));
-		}
-		if (!is_valid_number(trimmed))
-		{
-			free(trimmed);
-			free_map(numbers);
-			return (error_message("Invalid number format in color value", 0));
-		}
-		free(trimmed);
-		i++;
-	}
-	if (i != 3)
-	{
-		free_map(numbers);
-		return (error_message("Color must have exactly 3 values (R,G,B)", 0));
-	}
-	return (1);
-}
-
-static int	convert_rgb_values(char **numbers, int *rgb)
-{
-	int		i;
-	char	*trimmed;
-
-	i = 0;
-	while (i < 3)
-	{
-		trimmed = ft_strtrim(numbers[i]);
-		if (!trimmed)
-		{
-			free_map(numbers);
-			return (error_message("Memory allocation failed for trimming", 0));
-		}
-		rgb[i] = ft_atoi(trimmed);
-		free(trimmed);
-		if (rgb[i] < 0 || rgb[i] > 255)
-		{
-			free_map(numbers);
-			return (error_message("Color values must be between 0 and 255", 0));
-		}
-		i++;
-	}
-	return (1);
-}
-
-int	rgb_numbers(char *line, int j, int *rgb)
-{
-	char	**numbers;
-
-	while (line[j] && (line[j] == '\t' || line[j] == ' '))
-		j++;
-	numbers = ft_split(line + j, ',');
-	if (!numbers)
-		return (error_message("Memory allocation failed for color values", 0));
-	if (!validate_rgb_values(numbers))
-		return (0);
-	if (!convert_rgb_values(numbers, rgb))
-		return (0);
-	free_map(numbers);
-	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:47:41 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/13 21:23:50 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/14 03:39:33 by ifozmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,21 @@ typedef struct s_game
 	int			col;
 }				t_game;
 
+typedef struct s_direction
+{
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+}	t_direction;
+
 int				get_texture(char **map_line, t_map *map);
 int				rgb_numbers(char *line, int j, int *rgb);
+void			draw_floor_ceiling(t_game *game);
+void			perform_raycasting(t_game *game);
 
 int				init_game(t_game *game);
+void			init_game_struct(t_game *game);
 int				key_press(int keycode, t_game *game);
 int				key_release(int keycode, t_game *game);
 int				close_window(t_game *game);
@@ -143,14 +154,18 @@ char			*ft_strchr(const char *s, int c);
 int				ft_strlen(const char *s);
 char			**ft_split(char *s, char c);
 char			*ft_trimend(const char *s1, const char *set);
-
-void			perform_raycasting(t_game *game);
+int				ft_atoi(const char *str);
+char			*ft_strtrim(char *str);
+int				is_valid_number(char *str);
 
 char			*replace_tabs_with_spaces(char *line, int spaces_per_tab);
 char			**copy_map(char **map);
 void			free_map(char **map);
 char			**read_map_from_file(char *filename, t_game *game);
 void			validate_map(t_game *game);
+char			**init_map_lines(int fd, t_game *game);
+void			handle_map_error(t_game *game, char **tmpmap, const char *msg);
+void			handle_malloc_error(char **new_map, int i, char *error_msg);
 
 void			cleanup_all(t_game *game);
 void			cleanup_mlx_content(t_game *game);
