@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:47:05 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 15:21:52 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/15 00:42:42 by ifozmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	handle_color_identifier(char *line, int j, t_map *map)
 		if (!rgb_numbers(line, j, map->floor_color))
 			return (3);
 	}
-	else if (line[j] == 'C' && line[j+ 1] == ' ' && !(map->ceiling_color[0]))
+	else if (line[j] == 'C' && line[j + 1] == ' ' && !(map->ceiling_color[0]))
 	{
 		j++;
 		if (!rgb_numbers(line, j, map->ceiling_color))

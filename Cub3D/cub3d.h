@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:47:41 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 19:05:16 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/15 02:01:34 by ifozmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@
 #  define MAX_LINE_LENGTH 256
 # endif
 # ifndef WINDOW_WIDTH
-# define WINDOW_WIDTH 1200
+#  define WINDOW_WIDTH 1200
 # endif
 # ifndef WINDOW_HEIGHT
-# define WINDOW_HEIGHT 750
+#  define WINDOW_HEIGHT 750
 # endif
-
 
 # include "./mlx/mlx.h"
 # include <fcntl.h>
@@ -158,6 +157,22 @@ void			init_game_struct(t_game *game);
 int				key_press(int keycode, t_game *game);
 int				key_release(int keycode, t_game *game);
 int				close_window(t_game *game);
+
+void			handle_rotation(t_game *game, double rot_speed);
+void			handle_left_right(t_game *game, double move_speed);
+void			handle_forward_backward(t_game *game, double move_speed);
+
+int				game_loop(t_game *game);
+void			start_game_loop(t_game *game);
+int				control_extension(char *argv);
+
+int				init_map_and_textures(t_game *game, char *map_file,
+					char ***all_lines, int *map_start);
+int				init_and_setup_map(t_game **game, char *map_file,
+					char ***all_lines, char ***actual_map);
+int				setup_game_map(t_game *game, char **all_lines, int map_start,
+					char ***actual_map);
+int				initialize_and_validate(t_game **game, char *map_file);
 
 void			*ft_memset(void *b, int c, size_t len);
 char			*ft_strdup(const char *s1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_read.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 02:06:57 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 16:35:03 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/15 01:47:13 by ifozmen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,30 @@ static char	*process_line(char *line, char **map_lines, int fd)
 	return (cleaned);
 }
 
-static char **process_map_lines(int fd, t_game *game, int capacity)
+static char	**process_map_lines(int fd, t_game *game, int capacity)
 {
-   char    **map_lines;
-   char    *line;
-   int     size;
+	char	**map_lines;
+	char	*line;
+	int		size;
 
-
-   map_lines = init_map_lines(fd, game);
-   size = 0;
-   line = get_next_line(fd);
-   while (line != NULL)
-   {
-       if (size >= capacity - 1)
-       {
-           capacity *= 2;
-           map_lines = resize_map_array(map_lines, line, capacity);
-           if (!map_lines)
-               return (NULL);
-       }
-       map_lines[size++] = process_line(line, map_lines, fd);
-       line = get_next_line(fd);
-   }
-   map_lines[size] = NULL;
-   return (map_lines);
+	map_lines = init_map_lines(fd, game);
+	size = 0;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		if (size >= capacity - 1)
+		{
+			capacity *= 2;
+			map_lines = resize_map_array(map_lines, line, capacity);
+			if (!map_lines)
+				return (NULL);
+		}
+		map_lines[size++] = process_line(line, map_lines, fd);
+		line = get_next_line(fd);
+	}
+	map_lines[size] = NULL;
+	return (map_lines);
 }
-
 
 char	**read_map_from_file(char *filename, t_game *game)
 {
