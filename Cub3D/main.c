@@ -151,7 +151,12 @@ int	check_textures(t_map *map)
 	if (!map->north_texture || !map->south_texture || !map->west_texture
 		|| !map->east_texture)
 	{
-		printf("Hata: Eksik texture yolu\n");
+		printf("Hata: Missing texture\n");
+		return (0);
+	}
+	if (!map->floor_color[0] || !map->ceiling_color[0])
+	{
+		printf("Hata: Missing color\n");
 		return (0);
 	}
 	if (!check_single_texture(map->north_texture, "North")

@@ -49,7 +49,7 @@ static int	handle_texture_identifier(char *line, int j, t_map *map)
 
 static int	handle_color_identifier(char *line, int j, t_map *map)
 {
-	if (line[j] == 'F' && !(map->floor_color[0]))
+	if (line[j] == 'F' && line[j + 1] == ' ' && !(map->floor_color[0]))
 	{
 		j++;
 		if (!rgb_numbers(line, j, map->floor_color))
@@ -58,7 +58,7 @@ static int	handle_color_identifier(char *line, int j, t_map *map)
 			return (3);
 		}
 	}
-	else if (line[j] == 'C' && !(map->ceiling_color[0]))
+	else if (line[j] == 'C' && line[j + 1] == ' ' && !(map->ceiling_color[0]))
 	{
 		j++;
 		if (!rgb_numbers(line, j, map->ceiling_color))
@@ -84,8 +84,7 @@ static int	process_map_line(char *line, int j, t_map *map)
 		return (0);
 	else if (line[j] != '\0' && line[j] != '\n')
 	{
-		printf("Error: Invalid identifier: [%c] (ASCII: %d)\n", line[j],
-			line[j]);
+		printf("Error\nInvalid identifier\n");
 		return (-2);
 	}
 	return (1);
@@ -113,5 +112,5 @@ int	get_texture(char **map_line, t_map *map)
 		}
 		i++;
 	}
-	return (i);
+	return (0);
 }
