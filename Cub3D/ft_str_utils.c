@@ -42,10 +42,7 @@ static int	ft_trimplus(char *str, int start, int end)
 	while (start < end)
 	{
 		if (str[start] == ' ' || str[start] == '\t')
-		{
-			printf("Error Incorrect Amount Of Number : \"%c\" \n", str[start]);
 			return (0);
-		}
 		start++;
 	}
 	return (1);

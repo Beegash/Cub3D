@@ -68,6 +68,6 @@ int	init_game(t_game *game)
 	if (!init_mlx(game))
 		return (0);
 	if (!load_textures(game))
-		return (0);
+		return (error_message("Game initialization failed\n", 0));
 	return (1);
 }

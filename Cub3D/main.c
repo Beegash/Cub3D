@@ -15,7 +15,7 @@
 
 int	error_message(char *str, int err)
 {
-	printf("Error: %s\n", str);
+	printf("Error\n%s\n", str);
 	return (err);
 }
 
@@ -137,11 +137,8 @@ int	check_single_texture(char *texture_path, char *direction)
 
 	fd = open(texture_path, O_RDONLY);
 	if (fd < 0)
-	{
-		printf("Hata: %s texture dosyası bulunamadı: %s\n", direction,
-			texture_path);
 		return (0);
-	}
+
 	close(fd);
 	return (1);
 }
@@ -150,20 +147,14 @@ int	check_textures(t_map *map)
 {
 	if (!map->north_texture || !map->south_texture || !map->west_texture
 		|| !map->east_texture)
-	{
-		printf("Hata: Missing texture\n");
-		return (0);
-	}
+		return (error_message("Missing texture", 0));
 	if (!map->floor_color[0] || !map->ceiling_color[0])
-	{
-		printf("Hata: Missing color\n");
-		return (0);
-	}
+		return (error_message("Missing color", 0));
 	if (!check_single_texture(map->north_texture, "North")
 		|| !check_single_texture(map->south_texture, "South")
 		|| !check_single_texture(map->west_texture, "West")
 		|| !check_single_texture(map->east_texture, "East"))
-		return (0);
+		return (error_message("Texture file is not found", 0));
 	return (1);
 }
 
@@ -246,9 +237,15 @@ int	init_map_and_textures(t_game *game, char *map_file, char ***all_lines,
 {
 	*all_lines = read_map_from_file(map_file, game);
 	if (!*all_lines)
-		return (0);
+		return (error_message("Game initialization failed\n", 0));
 	*map_start = get_texture(*all_lines, game->map);
-	if (!*map_start || !check_textures(game->map))
+	if (!*map_start)
+	{
+		free_map(*all_lines);
+		*all_lines = NULL;
+		return (error_message("Element's format error\n", 0));
+	}
+	if (!check_textures(game->map))
 	{
 		free_map(*all_lines);
 		*all_lines = NULL;
@@ -262,7 +259,7 @@ int	setup_game_map(t_game *game, char **all_lines, int map_start,
 {
 	*actual_map = prepare_map_data(all_lines, map_start);
 	if (!*actual_map)
-		return (0);
+		return (error_message("Game initialization failed\n", 0));
 	game->map->map_line = *actual_map;
 	validate_map(game);
 	return (1);
@@ -281,7 +278,7 @@ int	init_and_setup_map(t_game **game, char *map_file, char ***all_lines,
 	if (!setup_game_map(*game, *all_lines, map_start, actual_map))
 	{
 		cleanup_resources(*game, *all_lines, NULL);
-		return (0);
+		return (error_message("Game initialization failed\n", 0));
 	}
 	return (1);
 }
@@ -292,14 +289,14 @@ int	initialize_and_validate(t_game **game, char *map_file)
 	char	**actual_map;
 
 	if (!(*game = init_game_s()))
-		return (0);
+		return (error_message("Game initialization failed\n", 0));
 	if (!init_and_setup_map(game, map_file, &all_lines, &actual_map))
 		return (0);
 	free_map(all_lines);
 	if (!init_game(*game))
 	{
 		cleanup_resources(*game, NULL, actual_map);
-		return (0);
+		return (0); //?
 	}
 	return (1);
 }
@@ -314,7 +311,7 @@ int	main(int argc, char **argv)
 		return (error_message("Invalid file extension\n", 1));
 
 	if (!initialize_and_validate(&game, argv[1]))
-		return (error_message("Game initialization failed\n", 1));
+		return (1);
 
 	start_game_loop(game);
 	cleanup_all(game);
