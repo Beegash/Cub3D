@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_read.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 02:06:57 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 02:40:36 by ifozmen          ###   ########.fr       */
+/*   Updated: 2025/02/14 14:32:08 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "./get_next_line/get_next_line.h"
 #include "cub3d.h"
 
 static void	handle_file_error(int fd, t_game *game)

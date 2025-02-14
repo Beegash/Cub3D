@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ray_cast_draw_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 03:35:57 by ifozmen           #+#    #+#             */
-/*   Updated: 2025/02/14 03:36:20 by ifozmen          ###   ########.fr       */
+/*   Updated: 2025/02/14 14:38:23 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	get_color(unsigned char *color)
+static int	get_color(int *color)
 {
 	return ((color[0] << 16) | (color[1] << 8) | color[2]);
 }

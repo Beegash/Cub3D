@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:47:41 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 03:39:33 by ifozmen          ###   ########.fr       */
+/*   Updated: 2025/02/14 14:35:30 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <math.h>
 
 typedef struct s_map
 {
@@ -131,11 +132,11 @@ typedef struct s_game
 
 typedef struct s_direction
 {
-	double	dir_x;
-	double	dir_y;
-	double	plane_x;
-	double	plane_y;
-}	t_direction;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
+}				t_direction;
 
 int				get_texture(char **map_line, t_map *map);
 int				rgb_numbers(char *line, int j, int *rgb);
@@ -166,6 +167,10 @@ void			validate_map(t_game *game);
 char			**init_map_lines(int fd, t_game *game);
 void			handle_map_error(t_game *game, char **tmpmap, const char *msg);
 void			handle_malloc_error(char **new_map, int i, char *error_msg);
+void			recursive_check_boundaries(char **temp_map, int y, int x,
+					t_game *game);
+void			check_isolated_areas(t_game *game);
+void			draw_wall(t_game *game, int x, t_raycast *ray);
 
 void			cleanup_all(t_game *game);
 void			cleanup_mlx_content(t_game *game);

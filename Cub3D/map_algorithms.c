@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_algorithms.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:50:55 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 02:37:59 by ifozmen          ###   ########.fr       */
+/*   Updated: 2025/02/14 14:27:44 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	flood_fill_area(char **map, int y, int x, t_game *game)
 	}
 }
 
-static void	recursive_check_boundaries(char **temp_map, int y, int x,
+void	recursive_check_boundaries(char **temp_map, int y, int x,
 		t_game *game)
 {
 	char	c;

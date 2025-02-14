@@ -3,11 +3,10 @@ NAME = cub3D
 SRCS = main.c \
        ft_str_funcs.c \
        ft_split.c \
-       ft_str_funcs.c \
+       ft_str_utils.c \
        game_init.c \
        game_init_utils.c \
        key_hooks.c \
-       texture.c \
        map_handle.c \
        map_operations.c \
        map_texture.c \

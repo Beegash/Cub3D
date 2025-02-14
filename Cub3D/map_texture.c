@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   texture.c                                          :+:      :+:    :+:   */
+/*   map_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifozmen <ifozmen@student.42.fr>            +#+  +:+       +#+        */
+/*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:47:05 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 03:40:22 by ifozmen          ###   ########.fr       */
+/*   Updated: 2025/02/14 15:21:52 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,17 @@ char	*texture_path(char *line, int j)
 
 static int	handle_texture_identifier(char *line, int j, t_map *map)
 {
-	if (line[j] == 'N' && line[j + 1] == 'O' && !(map->north_texture))
+	if (line[j] == 'N' && line[j + 1] == 'O' && line[j + 2] == ' '
+		&& !(map->north_texture))
 		map->north_texture = texture_path(line, j + 2);
-	else if (line[j] == 'S' && line[j + 1] == 'O' && !(map->south_texture))
+	else if (line[j] == 'S' && line[j + 1] == 'O' && line[j + 2] == ' '
+		&& !(map->south_texture))
 		map->south_texture = texture_path(line, j + 2);
-	else if (line[j] == 'W' && line[j + 1] == 'E' && !(map->west_texture))
+	else if (line[j] == 'W' && line[j + 1] == 'E' && line[j + 2] == ' '
+		&& !(map->west_texture))
 		map->west_texture = texture_path(line, j + 2);
-	else if (line[j] == 'E' && line[j + 1] == 'A' && !(map->east_texture))
+	else if (line[j] == 'E' && line[j + 1] == 'A' && line[j + 2] == ' '
+		&& !(map->east_texture))
 		map->east_texture = texture_path(line, j + 2);
 	return (1);
 }
@@ -51,7 +55,7 @@ static int	handle_color_identifier(char *line, int j, t_map *map)
 		if (!rgb_numbers(line, j, map->floor_color))
 		{
 			printf("Error in F color format\n");
-			return (0);
+			return (3);
 		}
 	}
 	else if (line[j] == 'C' && !(map->ceiling_color[0]))
@@ -60,7 +64,7 @@ static int	handle_color_identifier(char *line, int j, t_map *map)
 		if (!rgb_numbers(line, j, map->ceiling_color))
 		{
 			printf("Error in C color format\n");
-			return (0);
+			return (3);
 		}
 	}
 	return (1);
@@ -98,6 +102,8 @@ int	get_texture(char **map_line, t_map *map)
 		result = process_map_line(map_line[i], 0, map);
 		if (result == 0)
 			return (i);
+		if (result == 3)
+			return (0);
 		if (result == -2)
 			return (0);
 		if (result == -1)
