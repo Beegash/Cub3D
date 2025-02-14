@@ -131,7 +131,7 @@ int	game_loop(t_game *game)
 	return (0);
 }
 
-int	check_single_texture(char *texture_path, char *direction)
+int	check_single_texture(char *texture_path)
 {
 	int	fd;
 
@@ -150,10 +150,10 @@ int	check_textures(t_map *map)
 		return (error_message("Missing texture", 0));
 	if (!map->floor_color[0] || !map->ceiling_color[0])
 		return (error_message("Missing color", 0));
-	if (!check_single_texture(map->north_texture, "North")
-		|| !check_single_texture(map->south_texture, "South")
-		|| !check_single_texture(map->west_texture, "West")
-		|| !check_single_texture(map->east_texture, "East"))
+	if (!check_single_texture(map->north_texture)
+		|| !check_single_texture(map->south_texture)
+		|| !check_single_texture(map->west_texture)
+		|| !check_single_texture(map->east_texture))
 		return (error_message("Texture file is not found", 0));
 	return (1);
 }
@@ -237,13 +237,13 @@ int	init_map_and_textures(t_game *game, char *map_file, char ***all_lines,
 {
 	*all_lines = read_map_from_file(map_file, game);
 	if (!*all_lines)
-		return (error_message("Game initialization failed\n", 0));
+		return (error_message("Game initialization failed", 0));
 	*map_start = get_texture(*all_lines, game->map);
 	if (!*map_start)
 	{
 		free_map(*all_lines);
 		*all_lines = NULL;
-		return (error_message("Element's format error\n", 0));
+		return (error_message("Element's format error", 0));
 	}
 	if (!check_textures(game->map))
 	{
@@ -259,7 +259,7 @@ int	setup_game_map(t_game *game, char **all_lines, int map_start,
 {
 	*actual_map = prepare_map_data(all_lines, map_start);
 	if (!*actual_map)
-		return (error_message("Game initialization failed\n", 0));
+		return (error_message("Game initialization failed", 0));
 	game->map->map_line = *actual_map;
 	validate_map(game);
 	return (1);
@@ -278,7 +278,7 @@ int	init_and_setup_map(t_game **game, char *map_file, char ***all_lines,
 	if (!setup_game_map(*game, *all_lines, map_start, actual_map))
 	{
 		cleanup_resources(*game, *all_lines, NULL);
-		return (error_message("Game initialization failed\n", 0));
+		return (error_message("Game initialization failed", 0));
 	}
 	return (1);
 }
@@ -289,7 +289,7 @@ int	initialize_and_validate(t_game **game, char *map_file)
 	char	**actual_map;
 
 	if (!(*game = init_game_s()))
-		return (error_message("Game initialization failed\n", 0));
+		return (error_message("Game initialization failed", 0));
 	if (!init_and_setup_map(game, map_file, &all_lines, &actual_map))
 		return (0);
 	free_map(all_lines);
@@ -306,9 +306,9 @@ int	main(int argc, char **argv)
 	t_game *game;
 
 	if (argc != 2)
-		return (error_message("Wrong argument count\n", 1));
+		return (error_message("Wrong argument count", 1));
 	if (!control_extension(argv[1]))
-		return (error_message("Invalid file extension\n", 1));
+		return (error_message("Invalid file extension", 1));
 
 	if (!initialize_and_validate(&game, argv[1]))
 		return (1);

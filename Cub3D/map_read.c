@@ -15,10 +15,9 @@
 
 static void	handle_file_error(int fd, t_game *game)
 {
-	perror("Error opening file");
 	close(fd);
 	cleanup_all(game);
-	exit(EXIT_FAILURE);
+	exit(error_message("No such file or directory", 1));
 }
 
 static char	**resize_map_array(char **map_lines, char *line, int capacity)
