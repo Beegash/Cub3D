@@ -6,11 +6,10 @@
 /*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:50:55 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 14:27:44 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/14 19:07:19 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./get_next_line/get_next_line.h"
 #include "cub3d.h"
 
 void	flood_fill_area(char **map, int y, int x, t_game *game)
@@ -26,10 +25,11 @@ void	flood_fill_area(char **map, int y, int x, t_game *game)
 	c = map[y][x];
 	if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '1')
 	{
-		if ((c == '0') && (map[y][x + 1] == ' ' || map[y][x - 1] == ' ' || map[y
-				+ 1][x] == ' ' || map[y - 1][x] == ' '))
-			handle_map_error(game, map,
-				"Map contains open space accessible from player area");
+		if ((c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
+			&& (y == 0 || !map[y + 1] || x == 0 || x == row_len - 1 || map[y][x
+				+ 1] == ' ' || map[y][x - 1] == ' ' || map[y + 1][x] == ' '
+				|| map[y - 1][x] == ' '))
+			hmerror(game, map, "Open space or not closed");
 		map[y][x] = 'A';
 		flood_fill_area(map, y, x + 1, game);
 		flood_fill_area(map, y, x - 1, game);
@@ -38,14 +38,12 @@ void	flood_fill_area(char **map, int y, int x, t_game *game)
 	}
 }
 
-void	recursive_check_boundaries(char **temp_map, int y, int x,
-		t_game *game)
+void	recursive_check_boundaries(char **temp_map, int y, int x, t_game *game)
 {
 	char	c;
 
 	if (y < 0 || x < 0 || !temp_map[y] || x >= (int)ft_strlen(temp_map[y]))
-		handle_map_error(game, temp_map,
-			"Map is not closed/surrounded by walls");
+		hmerror(game, temp_map, "Map is not closed/surrounded by walls");
 	c = temp_map[y][x];
 	if (c == '0' || ft_strchr("NSEW", c))
 	{
@@ -56,8 +54,7 @@ void	recursive_check_boundaries(char **temp_map, int y, int x,
 		recursive_check_boundaries(temp_map, y - 1, x, game);
 	}
 	else if (c == ' ')
-		handle_map_error(game, temp_map,
-			"Map contains open space accessible from player area");
+		hmerror(game, temp_map, "Map contains open space ");
 }
 
 void	check_isolated_areas(t_game *game)
@@ -69,7 +66,7 @@ void	check_isolated_areas(t_game *game)
 
 	temp_map = copy_map(game->map->map_line);
 	if (!temp_map)
-		handle_map_error(game, NULL, "Failed to copy map");
+		hmerror(game, NULL, "Failed to copy map");
 	flood_fill_area(temp_map, game->loc_py, game->loc_px, game);
 	y = 0;
 	while (temp_map[y])
@@ -79,8 +76,9 @@ void	check_isolated_areas(t_game *game)
 		{
 			c = temp_map[y][x];
 			if (c == '0' || ft_strchr("NSEW", c))
-				handle_map_error(game, temp_map,
-					"Isolated area detected in the map!");
+			{
+				hmerror(game, temp_map, "Isolated area detected in the map!");
+			}
 			x++;
 		}
 		y++;

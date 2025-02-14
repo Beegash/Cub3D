@@ -21,7 +21,7 @@ static int	check_single_value(char *number, char **numbers)
 	{
 		free(trimmed);
 		free_map(numbers);
-		return (error_message("Empty color value found", 0));
+		return (0);
 	}
 	if (!is_valid_number(trimmed))
 	{
@@ -47,7 +47,7 @@ static int	validate_rgb_values(char **numbers)
 	if (i != 3)
 	{
 		free_map(numbers);
-		return (error_message("Color must have exactly 3 values (R,G,B)", 0));
+		return (0);
 	}
 	return (1);
 }
@@ -64,14 +64,14 @@ static int	convert_rgb_values(char **numbers, int *rgb)
 		if (!trimmed)
 		{
 			free_map(numbers);
-			return (error_message("Memory allocation failed for trimming", 0));
+			return (0);
 		}
 		rgb[i] = ft_atoi(trimmed);
 		free(trimmed);
 		if (rgb[i] < 0 || rgb[i] > 255)
 		{
 			free_map(numbers);
-			return (error_message("Color values must be between 0 and 255", 0));
+			return (0);
 		}
 		i++;
 	}
@@ -86,7 +86,7 @@ int	rgb_numbers(char *line, int j, int *rgb)
 		j++;
 	numbers = ft_split(line + j, ',');
 	if (!numbers)
-		return (error_message("Memory allocation failed for color values", 0));
+		return (0);
 	if (!validate_rgb_values(numbers))
 		return (0);
 	if (!convert_rgb_values(numbers, rgb))

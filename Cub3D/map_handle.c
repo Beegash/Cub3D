@@ -21,11 +21,14 @@ void	handle_malloc_error(char **new_map, int i, char *error_msg)
 	exit(EXIT_FAILURE);
 }
 
-void	handle_map_error(t_game *game, char **temp_map, const char *message)
+void	hmerror(t_game *game, char **temp_map, const char *message)
 {
-	fprintf(stderr, "Error\n%s\n", message);
+	free_map(game->all_lines);
+	printf("Error\n%s\n", message);
 	if (temp_map)
+	{
 		free_map(temp_map);
+	}
 	if (game)
 		cleanup_all(game);
 	exit(0);

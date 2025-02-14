@@ -53,19 +53,13 @@ static int	handle_color_identifier(char *line, int j, t_map *map)
 	{
 		j++;
 		if (!rgb_numbers(line, j, map->floor_color))
-		{
-			printf("Error in F color format\n");
 			return (3);
-		}
 	}
-	else if (line[j] == 'C' && line[j + 1] == ' ' && !(map->ceiling_color[0]))
+	else if (line[j] == 'C' && line[j+ 1] == ' ' && !(map->ceiling_color[0]))
 	{
 		j++;
 		if (!rgb_numbers(line, j, map->ceiling_color))
-		{
-			printf("Error in C color format\n");
 			return (3);
-		}
 	}
 	return (1);
 }
@@ -83,10 +77,7 @@ static int	process_map_line(char *line, int j, t_map *map)
 	else if (line[j] == '1' || line[j] == '0')
 		return (0);
 	else if (line[j] != '\0' && line[j] != '\n')
-	{
-		printf("Error\nInvalid identifier\n");
 		return (-2);
-	}
 	return (1);
 }
 

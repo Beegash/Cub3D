@@ -6,16 +6,23 @@
 /*   By: iozmen <iozmen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 20:47:41 by iozmen            #+#    #+#             */
-/*   Updated: 2025/02/14 14:35:30 by iozmen           ###   ########.fr       */
+/*   Updated: 2025/02/14 19:05:16 by iozmen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define MAX_LINE_LENGTH 256
+# ifndef MAX_LINE_LENGTH
+#  define MAX_LINE_LENGTH 256
+# endif
+# ifndef WINDOW_WIDTH
 # define WINDOW_WIDTH 1200
+# endif
+# ifndef WINDOW_HEIGHT
 # define WINDOW_HEIGHT 750
+# endif
+
 
 # include "./mlx/mlx.h"
 # include <fcntl.h>
@@ -25,6 +32,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <math.h>
+# include "./get_next_line/get_next_line.h"
 
 typedef struct s_map
 {
@@ -128,6 +136,8 @@ typedef struct s_game
 	int			loc_py;
 	int			row;
 	int			col;
+
+	char		**all_lines;
 }				t_game;
 
 typedef struct s_direction
@@ -165,7 +175,7 @@ void			free_map(char **map);
 char			**read_map_from_file(char *filename, t_game *game);
 void			validate_map(t_game *game);
 char			**init_map_lines(int fd, t_game *game);
-void			handle_map_error(t_game *game, char **tmpmap, const char *msg);
+void			hmerror(t_game *game, char **tmpmap, const char *msg);
 void			handle_malloc_error(char **new_map, int i, char *error_msg);
 void			recursive_check_boundaries(char **temp_map, int y, int x,
 					t_game *game);

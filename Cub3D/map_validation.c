@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-static void	check_all_characters(t_game *game)
+static void	check_all_characters(t_game *game )
 {
 	char	c;
 	int		x;
@@ -26,7 +26,7 @@ static void	check_all_characters(t_game *game)
 		{
 			c = game->map->map_line[y][x];
 			if (!ft_strchr(" 01NSEW", c))
-				handle_map_error(game, NULL, "Invalid character in map");
+				hmerror(game, NULL, "Invalid character in map");
 			x++;
 		}
 		y++;
@@ -39,7 +39,7 @@ void	check_boundaries(t_game *game, int y, int x)
 
 	temp_map = copy_map(game->map->map_line);
 	if (!temp_map)
-		handle_map_error(game, NULL, "Failed to copy map");
+		hmerror(game, NULL, "Failed to copy map");
 	recursive_check_boundaries(temp_map, y, x, game);
 	free_map(temp_map);
 }
@@ -83,7 +83,7 @@ void	validate_map(t_game *game)
 		y++;
 	}
 	if (game->playercount != 1)
-		handle_map_error(game, NULL, get_player_error(game->playercount));
+		hmerror(game, NULL, get_player_error(game->playercount));
 	check_isolated_areas(game);
 	check_boundaries(game, game->loc_py, game->loc_px);
 }
