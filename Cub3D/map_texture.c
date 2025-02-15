@@ -33,44 +33,53 @@ char	*texture_path(char *line, int j)
 static int	handle_texture_identifier(char *line, int j, t_map *map)
 {
 	if (line[j] == 'N' && line[j + 1] == 'O' && line[j + 2] == ' '
-		&& !(map->north_texture))
-		map->north_texture = texture_path(line, j + 2);
+		&& !(map->n_text))
+		map->n_text = texture_path(line, j + 2);
 	else if (line[j] == 'S' && line[j + 1] == 'O' && line[j + 2] == ' '
-		&& !(map->south_texture))
-		map->south_texture = texture_path(line, j + 2);
+		&& !(map->s_text))
+		map->s_text = texture_path(line, j + 2);
 	else if (line[j] == 'W' && line[j + 1] == 'E' && line[j + 2] == ' '
-		&& !(map->west_texture))
-		map->west_texture = texture_path(line, j + 2);
+		&& !(map->w_text))
+		map->w_text = texture_path(line, j + 2);
 	else if (line[j] == 'E' && line[j + 1] == 'A' && line[j + 2] == ' '
-		&& !(map->east_texture))
-		map->east_texture = texture_path(line, j + 2);
+		&& !(map->e_text))
+		map->e_text = texture_path(line, j + 2);
 	return (1);
 }
 
 static int	handle_color_identifier(char *line, int j, t_map *map)
 {
-	if (line[j] == 'F' && line[j + 1] == ' ' && !(map->floor_color[0]))
+	if (line[j] == 'F' && line[j + 1] == ' ')
 	{
+		if (map->floor_color_set)
+			return (-2);
 		j++;
 		if (!rgb_numbers(line, j, map->floor_color))
 			return (3);
+		map->floor_color_set = 1;
 	}
-	else if (line[j] == 'C' && line[j + 1] == ' ' && !(map->ceiling_color[0]))
+	else if (line[j] == 'C' && line[j + 1] == ' ')
 	{
+		if (map->ceiling_color_set)
+			return (-2);
 		j++;
 		if (!rgb_numbers(line, j, map->ceiling_color))
 			return (3);
+		map->ceiling_color_set = 1;
 	}
+	else
+		return (-2);
 	return (1);
 }
 
-static int	process_map_line(char *line, int j, t_map *map)
+int	process_map_line(char *line, int j, t_map *map)
 {
 	while (line[j] && (line[j] == '\t' || line[j] == ' ' || line[j] == '\n'))
 		j++;
 	if (!line[j])
 		return (-1);
-	if (line[j] == 'N' || line[j] == 'S' || line[j] == 'W' || line[j] == 'E')
+	if ((line[j] == 'N' && !map->n_text) || (line[j] == 'S' && !map->s_text)
+		|| (line[j] == 'W' && !map->w_text) || (line[j] == 'E' && !map->e_text))
 		return (handle_texture_identifier(line, j, map));
 	else if (line[j] == 'F' || line[j] == 'C')
 		return (handle_color_identifier(line, j, map));

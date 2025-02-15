@@ -22,14 +22,12 @@ SRCS = main.c \
        ray_cast_draw_utils.c \
        cleanup.c
 
-
-
 GNL_PATH = ./get_next_line/get_next_line.c \
            ./get_next_line/get_next_line_utils.c
 OBJS = $(SRCS:.c=.o) $(GNL_PATH:.c=.o)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I./mlx -I./$(GNL_DIR) 
+CFLAGS = -Wall -Wextra -Werror -I./mlx -I./$(GNL_DIR)
 MLX_PATH = ./mlx
 MLX_NAME = libmlx.a
 MLX_FLAGS = -L$(MLX_PATH) -lmlx -lXext -lX11 -lm -lz 
@@ -41,9 +39,6 @@ $(MLX_PATH)/$(MLX_NAME):
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -L$(MLX_PATH) -lmlx $(MLX_FLAGS) -lm -o $(NAME) 
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@make -C $(MLX_PATH) clean

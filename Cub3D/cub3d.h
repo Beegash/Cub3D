@@ -25,10 +25,8 @@
 
 # include "./mlx/mlx.h"
 # include <fcntl.h>
-# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 # include <unistd.h>
 # include <math.h>
 # include "./get_next_line/get_next_line.h"
@@ -36,12 +34,14 @@
 typedef struct s_map
 {
 	char		**map_line;
-	char		*north_texture;
-	char		*south_texture;
-	char		*west_texture;
-	char		*east_texture;
+	char		*n_text;
+	char		*s_text;
+	char		*w_text;
+	char		*e_text;
 	int			floor_color[3];
 	int			ceiling_color[3];
+	int			floor_color_set;
+	int			ceiling_color_set;
 }				t_map;
 
 typedef struct s_images
@@ -148,6 +148,7 @@ typedef struct s_direction
 }				t_direction;
 
 int				get_texture(char **map_line, t_map *map);
+int				process_map_line(char *line, int j, t_map *map);
 int				rgb_numbers(char *line, int j, int *rgb);
 void			draw_floor_ceiling(t_game *game);
 void			perform_raycasting(t_game *game);

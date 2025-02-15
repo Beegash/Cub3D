@@ -49,6 +49,8 @@ t_game	*init_game_s(void)
 		return (NULL);
 	}
 	ft_memset(game->map, 0, sizeof(t_map));
+	game->map->floor_color_set = 0;
+	game->map->ceiling_color_set = 0;
 	return (game);
 }
 

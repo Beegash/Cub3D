@@ -31,15 +31,15 @@ int	check_single_texture(char *texture_path)
 
 int	check_textures(t_map *map)
 {
-	if (!map->north_texture || !map->south_texture || !map->west_texture
-		|| !map->east_texture)
-		return (error_message("Missing texture", 0));
-	if (!map->floor_color[0] || !map->ceiling_color[0])
-		return (error_message("Missing color", 0));
-	if (!check_single_texture(map->north_texture)
-		|| !check_single_texture(map->south_texture)
-		|| !check_single_texture(map->west_texture)
-		|| !check_single_texture(map->east_texture))
+	if (!map->n_text || !map->s_text || !map->w_text
+		|| !map->e_text)
+		return (error_message("Texture Error", 0));
+	if (!map->floor_color_set || !map->ceiling_color_set)
+		return (error_message("Color Error", 0));
+	if (!check_single_texture(map->n_text)
+		|| !check_single_texture(map->s_text)
+		|| !check_single_texture(map->w_text)
+		|| !check_single_texture(map->e_text))
 		return (error_message("Texture file is not found", 0));
 	return (1);
 }

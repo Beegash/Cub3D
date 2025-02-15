@@ -27,7 +27,7 @@ static int	check_single_value(char *number, char **numbers)
 	{
 		free(trimmed);
 		free_map(numbers);
-		return (error_message("Invalid number format in color value", 0));
+		return (0);
 	}
 	free(trimmed);
 	return (1);

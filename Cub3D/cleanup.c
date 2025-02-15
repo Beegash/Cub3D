@@ -18,14 +18,14 @@ void	cleanup_map_content(t_map *map)
 		return ;
 	if (map->map_line)
 		free_map(map->map_line);
-	if (map->north_texture)
-		free(map->north_texture);
-	if (map->south_texture)
-		free(map->south_texture);
-	if (map->west_texture)
-		free(map->west_texture);
-	if (map->east_texture)
-		free(map->east_texture);
+	if (map->n_text)
+		free(map->n_text);
+	if (map->s_text)
+		free(map->s_text);
+	if (map->w_text)
+		free(map->w_text);
+	if (map->e_text)
+		free(map->e_text);
 }
 
 void	cleanup_mlx_content(t_game *game)

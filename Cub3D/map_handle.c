@@ -14,11 +14,10 @@
 
 void	handle_malloc_error(char **new_map, int i, char *error_msg)
 {
-	perror(error_msg);
 	while (i > 0)
 		free(new_map[--i]);
 	free(new_map);
-	exit(EXIT_FAILURE);
+	exit(error_message(error_msg, 1));
 }
 
 void	hmerror(t_game *game, char **temp_map, const char *message)

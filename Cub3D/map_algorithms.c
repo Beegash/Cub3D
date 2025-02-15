@@ -12,6 +12,17 @@
 
 #include "cub3d.h"
 
+int	is_open_space_or_not_closed(char **map, int y, int x, int row_len)
+{
+	if (y == 0 || !map[y + 1] || x == 0 || x == row_len - 1
+		|| map[y][x + 1] == ' ' || map[y][x - 1] == ' '
+		|| map[y + 1][x] == ' ' || map[y - 1][x] == ' '
+		|| map[y][x + 1] == '\0' || map[y][x - 1] == '\0'
+		|| map[y + 1][x] == '\0' || map[y - 1][x] == '\0')
+		return (1);
+	return (0);
+}
+
 void	flood_fill_area(char **map, int y, int x, t_game *game)
 {
 	int		row_len;
@@ -26,9 +37,7 @@ void	flood_fill_area(char **map, int y, int x, t_game *game)
 	if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '1')
 	{
 		if ((c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
-			&& (y == 0 || !map[y + 1] || x == 0 || x == row_len - 1 || map[y][x
-				+ 1] == ' ' || map[y][x - 1] == ' ' || map[y + 1][x] == ' '
-				|| map[y - 1][x] == ' '))
+			&& is_open_space_or_not_closed(map, y, x, row_len))
 			hmerror(game, map, "Open space or not closed");
 		map[y][x] = 'A';
 		flood_fill_area(map, y, x + 1, game);
@@ -92,25 +101,10 @@ void	free_game_resources(t_game *game)
 	{
 		if (game->map->map_line)
 			free_map(game->map->map_line);
-		free(game->map->north_texture);
-		free(game->map->south_texture);
-		free(game->map->west_texture);
-		free(game->map->east_texture);
+		free(game->map->n_text);
+		free(game->map->s_text);
+		free(game->map->w_text);
+		free(game->map->e_text);
 		free(game->map);
 	}
-}
-
-char	**init_map_lines(int fd, t_game *game)
-{
-	char	**map_lines;
-
-	map_lines = malloc(sizeof(char *) * 100);
-	if (!map_lines)
-	{
-		perror("Error allocating memory for map");
-		close(fd);
-		cleanup_all(game);
-		exit(EXIT_FAILURE);
-	}
-	return (map_lines);
 }

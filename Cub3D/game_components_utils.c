@@ -32,10 +32,10 @@ static int	load_textures(t_game *game)
 	int		i;
 	char	*texture_paths[4];
 
-	texture_paths[0] = game->map->north_texture;
-	texture_paths[1] = game->map->south_texture;
-	texture_paths[2] = game->map->west_texture;
-	texture_paths[3] = game->map->east_texture;
+	texture_paths[0] = game->map->n_text;
+	texture_paths[1] = game->map->s_text;
+	texture_paths[2] = game->map->w_text;
+	texture_paths[3] = game->map->e_text;
 	i = 0;
 	while (i < 4)
 	{
@@ -70,4 +70,18 @@ int	init_game(t_game *game)
 	if (!load_textures(game))
 		return (error_message("Game initialization failed", 0));
 	return (1);
+}
+
+char	**init_map_lines(int fd, t_game *game)
+{
+	char	**map_lines;
+
+	map_lines = malloc(sizeof(char *) * 100);
+	if (!map_lines)
+	{
+		close(fd);
+		cleanup_all(game);
+		exit(error_message("Error allocating memory for map", 1));
+	}
+	return (map_lines);
 }
