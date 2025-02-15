@@ -17,8 +17,8 @@ int	game_loop(t_game *game)
 	double	move_speed;
 	double	rot_speed;
 
-	move_speed = 0.1;
-	rot_speed = 0.05;
+	move_speed = 0.05;
+	rot_speed = 0.03;
 	handle_forward_backward(game, move_speed);
 	handle_left_right(game, move_speed);
 	handle_rotation(game, rot_speed);

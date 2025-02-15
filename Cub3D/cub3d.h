@@ -188,7 +188,6 @@ char			*ft_strtrim(char *str);
 int				is_valid_number(char *str);
 int				ft_strcount(char *str, char c);
 
-
 char			*replace_tabs_with_spaces(char *line, int spaces_per_tab);
 char			**copy_map(char **map);
 void			free_map(char **map);

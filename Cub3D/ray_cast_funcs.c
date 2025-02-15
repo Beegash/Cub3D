@@ -26,7 +26,7 @@ void	calculate_wall_height(t_game *game, t_raycast *ray)
 		ray->start_y = 0;
 	ray->end_y = ray->height / 2 + WINDOW_HEIGHT / 2;
 	if (ray->end_y >= WINDOW_HEIGHT)
-		ray->end_y = WINDOW_HEIGHT - 1;
+		ray->end_y = WINDOW_HEIGHT;
 }
 
 static void	set_ray_steps(t_game *game, t_raycast *ray, int map_x, int map_y)
