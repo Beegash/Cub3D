@@ -157,6 +157,9 @@ void			init_game_struct(t_game *game);
 int				key_press(int keycode, t_game *game);
 int				key_release(int keycode, t_game *game);
 int				close_window(t_game *game);
+int				check_textures(t_map *map);
+void			cleanup_resources(t_game *game, char **all_lines,
+					char **actual_map);
 
 void			handle_rotation(t_game *game, double rot_speed);
 void			handle_left_right(t_game *game, double move_speed);
@@ -183,6 +186,8 @@ char			*ft_trimend(const char *s1, const char *set);
 int				ft_atoi(const char *str);
 char			*ft_strtrim(char *str);
 int				is_valid_number(char *str);
+int				ft_strcount(char *str, char c);
+
 
 char			*replace_tabs_with_spaces(char *line, int spaces_per_tab);
 char			**copy_map(char **map);

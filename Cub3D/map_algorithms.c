@@ -75,7 +75,7 @@ void	check_isolated_areas(t_game *game)
 		while (temp_map[y][x])
 		{
 			c = temp_map[y][x];
-			if (c == '0' || ft_strchr("NSEW", c))
+			if (c == '0' || ft_strchr("NSEW", c) || c == '1')
 			{
 				hmerror(game, temp_map, "Isolated area detected in the map!");
 			}

@@ -5,7 +5,10 @@ SRCS = main.c \
        ft_split.c \
        ft_str_utils.c \
        game_init.c \
-       game_init_utils.c \
+       game_start.c \
+       game_components.c \
+       game_components_utils.c \
+       game_movement.c \
        key_hooks.c \
        map_handle.c \
        map_operations.c \

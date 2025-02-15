@@ -81,9 +81,13 @@ static int	convert_rgb_values(char **numbers, int *rgb)
 int	rgb_numbers(char *line, int j, int *rgb)
 {
 	char	**numbers;
+	int		i;
 
 	while (line[j] && (line[j] == '\t' || line[j] == ' '))
 		j++;
+	i = j;
+	if(ft_strcount(line+j, ',') > 3)
+		return (0);
 	numbers = ft_split(line + j, ',');
 	if (!numbers)
 		return (0);
